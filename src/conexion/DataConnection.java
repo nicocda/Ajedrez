@@ -14,8 +14,6 @@ public class DataConnection {
 		try{
 			Class.forName("com.mysql.jdbc.Driver");
 				con = (Connection)DriverManager.getConnection(url,user,pass);
-			if (con != null ) 
-				System.out.println("Conectado a base de datos "+url+" Con Exito");
 			}
 		catch(SQLException ex){
 			System.out.println("Hubo un problema al conectarse a la base de datos "+url+"\n Excepcion: "+ex);
@@ -56,4 +54,6 @@ public class DataConnection {
 		}
 		
 	}
+
+
 }

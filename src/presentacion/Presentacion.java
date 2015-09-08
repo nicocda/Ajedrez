@@ -6,17 +6,27 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JList;
+
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import conexion.DataConnection;
+
+import javax.swing.JTextArea;
+
+import negocio.ControladorPartida;
 
 public class Presentacion extends JFrame {
 
@@ -59,14 +69,13 @@ public class Presentacion extends JFrame {
 		contentPane.add(panel_2);
 		panel_2.setVisible(false);
 		
+
 		JPanel panel_inicial = new JPanel();
 		panel_inicial.setBounds(5, 5, 424, 251);
 		contentPane.add(panel_inicial);
 		panel_inicial.setLayout(null);
 		
-		
-		
-		
+	
 		
 		JLabel label = new JLabel("Fichas Blancas");
 		label.setFont(new Font("Verdana", Font.BOLD, 16));
@@ -112,9 +121,8 @@ public class Presentacion extends JFrame {
 		panel_2.add(button);
 		
 		
-		
 		txtDni = new JTextField();
-		txtDni.setBounds(124, 32, 271, 20);
+		txtDni.setBounds(124, 32, 98, 20);
 		panel_inicial.add(txtDni);
 		txtDni.setColumns(10);
 		
@@ -122,9 +130,10 @@ public class Presentacion extends JFrame {
 		lblIngreseSuDni.setBounds(36, 35, 79, 14);
 		panel_inicial.add(lblIngreseSuDni);
 		
-		JList list = new JList();
-		list.setBounds(36, 62, 359, 80);
-		panel_inicial.add(list);
+		JTextArea textArea = new JTextArea();
+		textArea.setBounds(36, 60, 340, 87);
+		panel_inicial.add(textArea);
+		
 		
 		txtDni2 = new JTextField();
 		txtDni2.setBounds(36, 152, 262, 20);
@@ -140,6 +149,17 @@ public class Presentacion extends JFrame {
 			@Override
 		
 			public void mouseClicked(MouseEvent arg0) {
+				int j1 =Integer.parseInt( txtDni.getText());
+				int j2 =Integer.parseInt( txtDni2.getText());
+				ControladorPartida cp = new ControladorPartida();
+				try {
+					if (!cp.buscarPartida(j1,j2))
+					cp.crearPartida(j1, j2);
+					else System.out.println("La Partida YA ESISTE; MAS TARDE PROGRAMO EL METODO");
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				panel_inicial.setVisible(false);
 				panel_2.setVisible(true);
 			}
@@ -147,5 +167,36 @@ public class Presentacion extends JFrame {
 		btnJugar.setFont(new Font("Comic Sans MS", Font.BOLD, 14));
 		btnJugar.setBounds(36, 178, 359, 34);
 		panel_inicial.add(btnJugar);
+		
+		JButton btnBuscarOponentes = new JButton("Buscar Oponentes");
+		btnBuscarOponentes.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) 
+			{
+				textArea.setText("");
+				String dni= txtDni.getText();
+				String query="select  p.blanco, p.negro, jn.nombre, jn.apellido, jb.nombre, jb.apellido from partida p inner join jugadores jb on p.blanco=jb.dni inner join jugadores jn on p.negro=jn.dni where blanco="+dni+" or negro="+dni;
+				DataConnection con = new DataConnection();
+				ResultSet resultado= con.getQuery(query);
+				try{
+					while(resultado.next())
+						{
+						if(Integer.parseInt(resultado.getString("p.blanco")) != Integer.parseInt(dni)){
+							textArea.append(resultado.getString("p.blanco")+" "+resultado.getString("jb.nombre")+" "+resultado.getString("jb.apellido")+"\n");
+						}
+						else{
+							textArea.append(resultado.getString("p.negro")+" "+resultado.getString("jn.nombre")+" "+resultado.getString("jn.apellido")+"\n");
+						}
+						};
+				}
+				catch(SQLException e)
+				{
+					e.printStackTrace();
+				}
+				
+			}
+		});
+		btnBuscarOponentes.setBounds(243, 31, 133, 23);
+		panel_inicial.add(btnBuscarOponentes);
 	}
 }
