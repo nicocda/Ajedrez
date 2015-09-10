@@ -1,17 +1,20 @@
 package entidades;
 
 public abstract class Trebejo{
-	private int posX, posY;
-	private boolean color, muerte;
+	private int posX, posY,dni1,dni2;
+	private char tipo;
+	private boolean color;
 	
 	
 	
-	public Trebejo(int x, int y, boolean c, boolean m){
-		
+	public Trebejo(char t, int x, int y, boolean c, int d1, int d2){
+
+		setTipo(t);
 		setPosX(x);
 		setPosY(y);
 		setColor(c);
-		setMuerte(m);
+		setDni1(d1);
+		setDni2(d2);
 		
 	}
 	//Get-Set
@@ -33,12 +36,25 @@ public abstract class Trebejo{
 	public void setColor(boolean color) {
 		this.color = color;
 	}
-	public boolean isMuerte() {
-		return muerte;
+	public int getDni1() {
+		return dni1;
 	}
-	public void setMuerte(boolean muerte) {
-		this.muerte = muerte;
+	public void setDni1(int dni1) {
+		this.dni1 = dni1;
 	}
+	public int getDni2() {
+		return dni2;
+	}
+	public void setDni2(int dni2) {
+		this.dni2 = dni2;
+	}
+	public char getTipo() {
+		return tipo;
+	}
+	public void setTipo(char tipo) {
+		this.tipo = tipo;
+	}
+
 	
 }
 

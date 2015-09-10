@@ -1,32 +1,32 @@
 package negocio;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import datos.*;
+import entidades.Jugador;
+import entidades.Partida;
+import entidades.Trebejo;
 
 public class ControladorPartida {
-	
-	public void crearPartida(int j1, int j2)
-	{
-		CatalogoTrebejos ct = new CatalogoTrebejos();
+
+	public Partida cargarPartida(int dni1, int dni2) throws Exception{
 		CatalogoPartida cp = new CatalogoPartida();
-		cp.addPartida(j1,j2);
-		try {
-			ct.addTrebejos(j1,j2);
-		} 
-		catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		
-	}
-		
-		public boolean buscarPartida(int j1, int j2) throws SQLException
+		CatalogoTrebejos ct = new CatalogoTrebejos();
+		CatalogoJugadores cj = new CatalogoJugadores();
+		Jugador j1 = cj.buscarJugador(dni1);
+		Jugador j2 = cj.buscarJugador(dni2);
+		if (!cp.existePartida(dni1, dni2))
 		{
-			CatalogoPartida cp = new CatalogoPartida();
-			boolean existo= cp.buscarPartida(j1,j2);
-			return (existo);
+			cp.agregarPartida(dni1, dni2);
+			ct.addTrebejos(dni1, dni2);
 		}
+		ArrayList<Trebejo> trebejos = ct.buscarTrebejos(dni1,dni2);
+		Partida p = new Partida(j1, j2, trebejos);
+		return (p);
 		
 	}
 
 
+
+
+}

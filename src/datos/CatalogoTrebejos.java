@@ -1,7 +1,10 @@
 package datos;
 import java.sql.*;
+import java.util.ArrayList;
+import entidades.*;
 
 import conexion.DataConnection;
+import entidades.Trebejo;
 public class CatalogoTrebejos {
 
 	public void addTrebejos(int j1, int j2) throws SQLException {
@@ -20,6 +23,41 @@ public class CatalogoTrebejos {
 																										+ "('R',5,1,true,"+j1+","+j2+"),('R',5,8,false,"+j1+","+j2+")";
 		con.setQuery(query);
 		
+	}
+
+	public ArrayList<Trebejo> buscarTrebejos(int j1, int j2) throws SQLException {
+		DataConnection con = new DataConnection();
+		ArrayList<Trebejo> array = new ArrayList<Trebejo>();
+		String query= "select * from trebejos where dni1="+j1+" and dni2="+j2;
+		ResultSet resultado = con.getQuery(query);
+		while(resultado.next()){
+			char tipo = resultado.getString(1).charAt(0);
+			int posX = resultado.getInt(2);
+			int posY = resultado.getInt(3);
+			boolean color = resultado.getBoolean(4);
+			Trebejo t = null;
+			switch(tipo){
+				case 'P' : t= new Peon(tipo,posX,posY,color,j1,j2);
+							break;
+				case 'T' : t= new Torre(tipo,posX,posY,color,j1,j2);
+							break;
+				case 'C' : t= new Caballo(tipo,posX,posY,color,j1,j2);
+							break;
+				case 'A' : t= new Alfil(tipo,posX,posY,color,j1,j2);
+							break;
+				case 'R' : t= new Rey(tipo,posX,posY,color,j1,j2);
+							break;
+				case 'D' : t=new Reina(tipo,posX,posY,color,j1,j2);
+							break;
+	
+			}
+				
+			if (t!=null)array.add(t);
+			
+		}
+
+		
+		return array;
 	}
 
 }

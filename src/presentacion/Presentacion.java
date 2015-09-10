@@ -28,6 +28,8 @@ import javax.swing.JTextArea;
 
 import negocio.ControladorPartida;
 
+import entidades.Partida;
+
 public class Presentacion extends JFrame {
 
 	private JPanel contentPane;
@@ -77,15 +79,15 @@ public class Presentacion extends JFrame {
 		
 	
 		
-		JLabel label = new JLabel("Fichas Blancas");
-		label.setFont(new Font("Verdana", Font.BOLD, 16));
-		label.setBounds(38, 22, 135, 44);
-		panel_2.add(label);
+		JLabel lblFichasDe = new JLabel("Fichas de:");
+		lblFichasDe.setFont(new Font("Verdana", Font.BOLD, 16));
+		lblFichasDe.setBounds(38, 22, 89, 44);
+		panel_2.add(lblFichasDe);
 		
-		JLabel label_1 = new JLabel("Fichas Negras");
-		label_1.setFont(new Font("Verdana", Font.BOLD, 16));
-		label_1.setBounds(257, 22, 167, 44);
-		panel_2.add(label_1);
+		JLabel lblFichasDe_1 = new JLabel("Fichas de:");
+		lblFichasDe_1.setFont(new Font("Verdana", Font.BOLD, 16));
+		lblFichasDe_1.setBounds(238, 22, 89, 44);
+		panel_2.add(lblFichasDe_1);
 		
 		JList list_1 = new JList();
 		list_1.setBounds(38, 61, 135, 120);
@@ -120,6 +122,16 @@ public class Presentacion extends JFrame {
 		button.setBounds(292, 192, 89, 23);
 		panel_2.add(button);
 		
+		JLabel lblJ1 = new JLabel("Jugador 1");
+		lblJ1.setFont(new Font("Verdana", Font.BOLD, 16));
+		lblJ1.setBounds(130, 22, 98, 44);
+		panel_2.add(lblJ1);
+		
+		JLabel lblJ2 = new JLabel("Jugador 2");
+		lblJ2.setFont(new Font("Verdana", Font.BOLD, 16));
+		lblJ2.setBounds(337, 22, 89, 44);
+		panel_2.add(lblJ2);
+		
 		
 		txtDni = new JTextField();
 		txtDni.setBounds(124, 32, 98, 20);
@@ -151,15 +163,17 @@ public class Presentacion extends JFrame {
 			public void mouseClicked(MouseEvent arg0) {
 				int j1 =Integer.parseInt( txtDni.getText());
 				int j2 =Integer.parseInt( txtDni2.getText());
-				ControladorPartida cp = new ControladorPartida();
-				try {
-					if (!cp.buscarPartida(j1,j2))
-					cp.crearPartida(j1, j2);
-					else System.out.println("La Partida YA ESISTE; MAS TARDE PROGRAMO EL METODO");
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				ControladorPartida cp = new ControladorPartida();				
+						
+					try {
+						Partida p = cp.cargarPartida(j1, j2);
+						lblJ1.setText(p.getBlanco().getNombre());
+						lblJ2.setText(p.getNegro().getNombre());
+					} catch (Exception e) {
+					
+						e.printStackTrace();
+					}
+					
 				panel_inicial.setVisible(false);
 				panel_2.setVisible(true);
 			}

@@ -5,8 +5,8 @@ public class Rey extends Trebejo {
 	
 	
 	
-	public Rey(int x, int y, boolean c, boolean m){
+	public Rey(char t, int x, int y, boolean c, int d1, int d2){
 		
-		super(x, y, c, m);
+		super(t, x, y, c, d1, d2);
 	}
 }
