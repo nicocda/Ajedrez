@@ -13,7 +13,12 @@ public class CatalogoJugadoresPropuesto
 {
 	//Trabajamos con listas o volcamos directamente de la DB?
 	//Acá uso listas.
+	//(Cuando nos juntemos lo vemos y discutimos)
 	private ArrayList<Jugador> listaJugadores;
+	
+	//Propiedad donde voy a guardar mi salida de la búsqueda (si usamos lista no es necesario, directamente
+	//se busca de manera local sobre la lista
+	private Jugador jugador;
 	
 	//El constructor llena el ArrayList con todos los jugadores existentes
 	public CatalogoJugadoresPropuesto()
@@ -24,6 +29,11 @@ public class CatalogoJugadoresPropuesto
 	public ArrayList<Jugador> getListaJugadores()
 	{
 		return this.listaJugadores;
+	}
+	
+	public Jugador getJugador()
+	{
+		return this.jugador;
 	}
 	
 	//Obtiene todos los jugadores existentes
@@ -72,8 +82,8 @@ public class CatalogoJugadoresPropuesto
 	}
 	
 	//Se sobrecarga el método cargar lista, para poder así pasarle un atributo
-	//y haecer una búsqueda específica en la base de datos (en este caso por nombre, se puede usar dni).
-	//El resultado es la misma lista que antes, pero con un filtrado de nombres (por ejemplo, todos los que empiezan con A)
+	//y haecer una búsqueda específica en la base de datos.
+	//Lo dejo por si en algún momento queremos filtrar...
 	public void cargarLista(String filtro)
 	{
 		listaJugadores = new ArrayList<Jugador>();
@@ -118,6 +128,54 @@ public class CatalogoJugadoresPropuesto
 	
 	}
 	
+	//Busqueda por DNI (no es necesaria si usamos lista y viceversa)
+	public void buscarPorDni(int dni)
+	{
+		listaJugadores = new ArrayList<Jugador>();
+		String sql="select * from jugadores where nombre = "+ Integer.toString(dni);
+		Statement sentencia=null;
+		ResultSet rs=null;
+		
+		try 
+		{			
+			sentencia= ConexionPropuesta.getInstancia().getConn().createStatement();
+			rs= sentencia.executeQuery(sql);
+			
+			while(rs.next())
+			{
+				Jugador j = new Jugador(rs.getInt(1), rs.getString(2), rs.getString(3));
+				jugador = j;
+			}
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try
+			{
+				if(rs!=null)
+				{
+					rs.close();
+				}
+				if(sentencia!=null && !sentencia.isClosed())
+				{
+					sentencia.close();
+				}
+				ConexionPropuesta.getInstancia().CloseConn();
+			}
+			catch (SQLException sqle)
+			{
+				sqle.printStackTrace();
+			}
+		}
+	
+	}
+	
+	//Estos últimos 2 pertenecerían al ABM de jugadores. No nos importan.
+	
+	/*
 	public void modificarJugador(Jugador J)
 	{
 		String sql="update jugadores set nombre = ?, apellido = ? where dni = ?";
@@ -181,5 +239,8 @@ public class CatalogoJugadoresPropuesto
 		//Igual que en el update, siempre que cree un nuevo jugador quiero actualizar mi lista
 		cargarLista("");
 	}
+
+
+*/
 
 }
