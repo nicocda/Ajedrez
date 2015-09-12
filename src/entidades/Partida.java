@@ -7,6 +7,10 @@ public class Partida {
 	private Jugador blanco, negro;
 	private ArrayList<Trebejo> fichas = new ArrayList<Trebejo>();
 	
+	public Partida()
+	{
+	}
+	
 	public Partida(Jugador b, Jugador n, ArrayList<Trebejo> fichas){
 		
 		setBlanco(b);
