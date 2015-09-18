@@ -27,7 +27,6 @@ import conexion.DataConnection;
 import javax.swing.JTextArea;
 
 import negocio.ControladorPartida;
-
 import entidades.Partida;
 
 public class Presentacion extends JFrame {
@@ -185,28 +184,32 @@ public class Presentacion extends JFrame {
 		JButton btnBuscarOponentes = new JButton("Buscar Oponentes");
 		btnBuscarOponentes.addMouseListener(new MouseAdapter() {
 			@Override
-			public void mouseClicked(MouseEvent arg0) 
+			public void mouseClicked(MouseEvent arg0)
 			{
 				textArea.setText("");
 				String dni= txtDni.getText();
 				String query="select  p.blanco, p.negro, jn.nombre, jn.apellido, jb.nombre, jb.apellido from partida p inner join jugadores jb on p.blanco=jb.dni inner join jugadores jn on p.negro=jn.dni where blanco="+dni+" or negro="+dni;
 				DataConnection con = new DataConnection();
 				ResultSet resultado= con.getQuery(query);
-				try{
-					while(resultado.next())
-						{
-						if(Integer.parseInt(resultado.getString("p.blanco")) != Integer.parseInt(dni)){
-							textArea.append(resultado.getString("p.blanco")+" "+resultado.getString("jb.nombre")+" "+resultado.getString("jb.apellido")+"\n");
-						}
-						else{
-							textArea.append(resultado.getString("p.negro")+" "+resultado.getString("jn.nombre")+" "+resultado.getString("jn.apellido")+"\n");
-						}
-						};
-				}
-				catch(SQLException e)
-				{
-					e.printStackTrace();
-				}
+			
+					try {
+						while(resultado.next())
+							{
+							if(Integer.parseInt(resultado.getString("p.blanco")) != Integer.parseInt(dni)){
+								textArea.append(resultado.getString("p.blanco")+" "+resultado.getString("jb.nombre")+" "+resultado.getString("jb.apellido")+"\n");
+							}
+							else{
+								textArea.append(resultado.getString("p.negro")+" "+resultado.getString("jn.nombre")+" "+resultado.getString("jn.apellido")+"\n");
+							}
+							}
+					} catch (NumberFormatException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					};
+				
 				
 			}
 		});

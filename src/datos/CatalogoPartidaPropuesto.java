@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
 import conexion.ConexionPropuesta;
+import conexion.DataConnection;
 import entidades.Trebejo;
 import entidades.Partida;
 
@@ -15,6 +17,46 @@ public class CatalogoPartidaPropuesto
 	private ArrayList<Partida> listaPartidas;
 	
 	
+	public boolean existePartida(int j1, int j2) {
+		
+	
+	ResultSet rs = null;
+	Statement sentencia=null;
+	String query = "select * "
+			+ "from partida p "
+			+ "where (blanco="+j1+" and negro="+j2+") or (blanco="+j2+" and negro="+j1+") ";
+	boolean existePartida = false;
+	try{
+		sentencia=ConexionPropuesta.getInstancia().getConn().createStatement();
+		rs = sentencia.executeQuery(query);
+		existePartida = rs.next();
+		
+	}
+	catch(SQLException e)
+	{
+		e.printStackTrace();
+	}
+	finally
+	{
+		try
+		{
+			if(rs!=null)
+			{
+				rs.close();
+			}
+			if(sentencia!=null && !sentencia.isClosed())
+			{
+				sentencia.close();
+			}
+			ConexionPropuesta.getInstancia().CloseConn();
+		}
+		catch (SQLException sqle)
+		{
+			sqle.printStackTrace();
+		}
+	}
+	return(existePartida);
+}
 	//Método para Obtener todas las partidas iniciadas de un jugador
 	public void buscarPartidas(int j1)
 	{
@@ -37,13 +79,9 @@ public class CatalogoPartidaPropuesto
 				CatalogoJugadoresPropuesto cj = new CatalogoJugadoresPropuesto();
 				CatalogoTrebejosPropuesto ct = new CatalogoTrebejosPropuesto();
 				//Con el catalogo ya programado busco los 2 jugadores...
-				cj.buscarPorDni(rs.getInt("p.blanco"));
-				
-				partida.setBlanco(cj.getJugador());
-				
-				cj.buscarPorDni(rs.getInt("p.negro"));
-				
-				partida.setNegro(cj.getJugador());
+			
+				partida.setBlanco(cj.buscarJugador(rs.getInt("p.blanco")));
+				partida.setNegro(cj.buscarJugador(rs.getInt("p.blanco")));
 				//...y los trebejos
 				ct.buscarTrebejos(rs.getInt("p.blanco"), rs.getInt("p.negro"));
 				
@@ -75,5 +113,37 @@ public class CatalogoPartidaPropuesto
 			}
 		}	
 	}
+	
+
+	public void agregarPartida(int j1, int j2)
+	{
+		String sql="INSERT INTO partida (blanco, negro) VALUES (?,?)";
+		PreparedStatement sentencia=null;
+		Connection conn=ConexionPropuesta.getInstancia().getConn();
+		
+		try {
+			sentencia=conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			sentencia.setInt(1, j1);			
+			sentencia.setInt(2, j2);
+			sentencia.executeUpdate();
+
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
+		finally{
+			try{
+				if(sentencia!=null && !sentencia.isClosed()){sentencia.close();}
+				ConexionPropuesta.getInstancia().CloseConn();
+			}
+			catch (SQLException sqle){
+				sqle.printStackTrace();
+			}
+			
+		}
+		
+	}
+	
+	
+	
 	
 }

@@ -128,13 +128,16 @@ public class CatalogoJugadoresPropuesto
 	
 	}
 	
+	
+	
 	//Busqueda por DNI (no es necesaria si usamos lista y viceversa)
-	public void buscarPorDni(int dni)
+	public Jugador buscarJugador(int dni)
 	{
 		listaJugadores = new ArrayList<Jugador>();
 		String sql="select * from jugadores where nombre = "+ Integer.toString(dni);
 		Statement sentencia=null;
 		ResultSet rs=null;
+		Jugador j = null;
 		
 		try 
 		{			
@@ -143,7 +146,7 @@ public class CatalogoJugadoresPropuesto
 			
 			while(rs.next())
 			{
-				Jugador j = new Jugador(rs.getInt(1), rs.getString(2), rs.getString(3));
+				j = new Jugador(rs.getInt(1), rs.getString(2), rs.getString(3));
 				jugador = j;
 			}
 		}
@@ -170,7 +173,7 @@ public class CatalogoJugadoresPropuesto
 				sqle.printStackTrace();
 			}
 		}
-	
+	return(j);
 	}
 	
 	//Estos últimos 2 pertenecerían al ABM de jugadores. No nos importan.
