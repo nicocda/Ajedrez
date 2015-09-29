@@ -13,7 +13,18 @@ import entidades.Trebejo;
 import entidades.Partida;
 
 public class CatalogoPartidaPropuesto
-{
+{	
+
+	   private static CatalogoPartidaPropuesto instance = null;
+	   public CatalogoPartidaPropuesto() {
+	   }
+	   public static CatalogoPartidaPropuesto getInstance() {
+	      if(instance == null) {
+	         instance = new CatalogoPartidaPropuesto();
+	      }
+	      return instance;
+	   }
+	
 	private ArrayList<Partida> listaPartidas;
 	
 	
@@ -58,13 +69,14 @@ public class CatalogoPartidaPropuesto
 	return(existePartida);
 }
 	//Método para Obtener todas las partidas iniciadas de un jugador
-	public void buscarPartidas(int j1)
+	public ArrayList<Partida> buscarPartidas(int j1)
 	{
 		listaPartidas = new ArrayList<Partida>();
-		String sql="select p.blanco, p.negro from partida where blanco="+j1+" or negro="+j1;
+		String sql="select p.blanco, p.negro from partida p where blanco="+j1+" or negro="+j1;
 		Statement sentencia=null;
 		ResultSet rs=null;
-		
+		CatalogoJugadoresPropuesto cj = new CatalogoJugadoresPropuesto();
+		CatalogoTrebejosPropuesto ct = new CatalogoTrebejosPropuesto();
 		try 
 		{			
 			sentencia= ConexionPropuesta.getInstancia().getConn().createStatement();
@@ -73,11 +85,10 @@ public class CatalogoPartidaPropuesto
 			//Tener en cuenta para futuras validaciones
 			while (rs.next())
 			{			
-				//Si encuentor un registro creo una partida y la comienzo a cargar.
+				//Si encuentro un registro creo una partida y la comienzo a cargar.
 				Partida partida = new Partida();
 				
-				CatalogoJugadoresPropuesto cj = new CatalogoJugadoresPropuesto();
-				CatalogoTrebejosPropuesto ct = new CatalogoTrebejosPropuesto();
+				
 				//Con el catalogo ya programado busco los 2 jugadores...
 			
 				partida.setBlanco(cj.buscarJugador(rs.getInt("p.blanco")));
@@ -101,7 +112,7 @@ public class CatalogoPartidaPropuesto
 				{
 					rs.close();
 				}
-				if(sentencia!=null && !sentencia.isClosed())
+				if(null!=sentencia && !sentencia.isClosed())
 				{
 					sentencia.close();
 				}
@@ -111,10 +122,11 @@ public class CatalogoPartidaPropuesto
 			{
 				sqle.printStackTrace();
 			}
-		}	
+		}
+		return listaPartidas;	
 	}
 	
-
+	
 	public void agregarPartida(int j1, int j2)
 	{
 		String sql="INSERT INTO partida (blanco, negro) VALUES (?,?)";

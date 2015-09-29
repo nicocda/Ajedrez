@@ -6,35 +6,44 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
 import conexion.ConexionPropuesta;
 import entidades.Jugador;
 
 public class CatalogoJugadoresPropuesto 
 {
+	  private static CatalogoJugadoresPropuesto instance = null;
+	  public CatalogoJugadoresPropuesto() {
+	   }
+	   public static CatalogoJugadoresPropuesto getInstance() {
+	      if(instance == null) {
+	         instance = new CatalogoJugadoresPropuesto();
+	      }
+	      return instance;
+	   }
+	
 	//Trabajamos con listas o volcamos directamente de la DB?
 	//Acá uso listas.
 	//(Cuando nos juntemos lo vemos y discutimos)
 	private ArrayList<Jugador> listaJugadores;
-	
-	//Propiedad donde voy a guardar mi salida de la búsqueda (si usamos lista no es necesario, directamente
-	//se busca de manera local sobre la lista
-	private Jugador jugador;
+
 	
 	//El constructor llena el ArrayList con todos los jugadores existentes
-	public CatalogoJugadoresPropuesto()
+	/*public CatalogoJugadoresPropuesto()
 	{
 		cargarLista();
-	}
+	}*/
 	
 	public ArrayList<Jugador> getListaJugadores()
 	{
 		return this.listaJugadores;
 	}
 	
-	public Jugador getJugador()
+	//Creo que no hace falta porque ya devuelvo en el metodo, por las dudas lo comento y no lo borro
+	/*public Jugador getJugador()
 	{
 		return this.jugador;
-	}
+	}*/
 	
 	//Obtiene todos los jugadores existentes
 	private void cargarLista()
@@ -133,7 +142,7 @@ public class CatalogoJugadoresPropuesto
 	//Busqueda por DNI (no es necesaria si usamos lista y viceversa)
 	public Jugador buscarJugador(int dni)
 	{
-		listaJugadores = new ArrayList<Jugador>();
+		//listaJugadores = new ArrayList<Jugador>();
 		String sql="select * from jugadores where nombre = "+ Integer.toString(dni);
 		Statement sentencia=null;
 		ResultSet rs=null;
@@ -147,7 +156,6 @@ public class CatalogoJugadoresPropuesto
 			while(rs.next())
 			{
 				j = new Jugador(rs.getInt(1), rs.getString(2), rs.getString(3));
-				jugador = j;
 			}
 		}
 		catch (SQLException e) 
@@ -175,6 +183,8 @@ public class CatalogoJugadoresPropuesto
 		}
 	return(j);
 	}
+
+
 	
 	//Estos últimos 2 pertenecerían al ABM de jugadores. No nos importan.
 	

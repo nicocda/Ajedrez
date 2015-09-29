@@ -20,7 +20,15 @@ import entidades.Trebejo;
 public class CatalogoTrebejosPropuesto
 {
 	private ArrayList<Trebejo> listaTrebejos;
-
+	private static CatalogoTrebejosPropuesto instance = null;
+	public CatalogoTrebejosPropuesto() {
+	   }
+	   public static CatalogoTrebejosPropuesto getInstance() {
+	      if(instance == null) {
+	         instance = new CatalogoTrebejosPropuesto();
+	      }
+	      return instance;
+	   }
 	
 	public ArrayList<Trebejo> getListaTrebejos()
 	{

@@ -1,21 +1,23 @@
 package negocio;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import conexion.DataConnection;
 import datos.*;
 import entidades.Jugador;
 import entidades.Partida;
 import entidades.Trebejo;
 
 public class ControladorPartida {
-
+		CatalogoPartidaPropuesto cp = new CatalogoPartidaPropuesto();
+		CatalogoTrebejosPropuesto ct = new CatalogoTrebejosPropuesto();
+		CatalogoJugadoresPropuesto cj = new CatalogoJugadoresPropuesto();
 	public Partida cargarPartida(int dni1, int dni2) throws Exception{
 		//CatalogoPartida cp = new CatalogoPartida();
 		//CatalogoTrebejos ct = new CatalogoTrebejos();
 		//CatalogoJugadores cj = new CatalogoJugadores();
-		CatalogoPartidaPropuesto cp = new CatalogoPartidaPropuesto();
-		CatalogoTrebejosPropuesto ct = new CatalogoTrebejosPropuesto();
-		CatalogoJugadoresPropuesto cj = new CatalogoJugadoresPropuesto();
+		
 		Jugador j1 = cj.buscarJugador(dni1);
 		Jugador j2 = cj.buscarJugador(dni2);
 		
@@ -30,7 +32,42 @@ public class ControladorPartida {
 		
 	}
 
-
+	public ArrayList<Jugador> buscarOponente(int dni){
+		ArrayList<Partida> listaPartidas = new ArrayList<Partida>();
+		ArrayList<Jugador>	jugadores = new ArrayList<Jugador>();
+		listaPartidas = cp.buscarPartidas(dni);
+		for (Partida p : listaPartidas){
+			if(dni == p.getBlanco().getDni()){
+				jugadores.add(p.getNegro());
+			}else{
+				jugadores.add(p.getBlanco());
+			}
+		};
+		return(jugadores);
+		/*String query="select  p.blanco, p.negro, jn.nombre, jn.apellido, jb.nombre, jb.apellido from partida p inner join jugadores jb on p.blanco=jb.dni inner join jugadores jn on p.negro=jn.dni where blanco=? or negro=?";
+		cp.buscarPartidas(dni);
+		
+	
+			try {
+				while(resultado.next())
+					{
+					if(Integer.parseInt(resultado.getString("p.blanco")) != Integer.parseInt(dni)){
+						textArea.append(resultado.getString("p.blanco")+" "+resultado.getString("jb.nombre")+" "+resultado.getString("jb.apellido")+"\n");
+					}
+					else{
+						textArea.append(resultado.getString("p.negro")+" "+resultado.getString("jn.nombre")+" "+resultado.getString("jn.apellido")+"\n");
+					}
+					}
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			};
+		*/
+		
+	}
 
 
 }
