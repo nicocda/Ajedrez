@@ -30,7 +30,7 @@ public abstract class Trebejo{
 	public void setPosY(int posY) {
 		this.posY = posY;
 	}
-	public boolean isColor() {
+	public boolean getColor() {
 		return color;
 	}
 	public void setColor(boolean color) {

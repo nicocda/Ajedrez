@@ -1,14 +1,9 @@
 package datos;
 
-import java.sql.ResultSet;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 import conexion.ConexionPropuesta;
-import conexion.DataConnection;
 import entidades.Trebejo;
 import entidades.Partida;
 
@@ -113,7 +108,7 @@ public class CatalogoPartidaPropuesto
 					rs.close();
 				}
 				if(null!=sentencia && !sentencia.isClosed())
-				{
+						{
 					sentencia.close();
 				}
 				ConexionPropuesta.getInstancia().CloseConn();
@@ -144,7 +139,10 @@ public class CatalogoPartidaPropuesto
 		}
 		finally{
 			try{
-				if(sentencia!=null && !sentencia.isClosed()){sentencia.close();}
+				if(sentencia!=null && !sentencia.isClosed())
+				{
+					sentencia.close();
+					}
 				ConexionPropuesta.getInstancia().CloseConn();
 			}
 			catch (SQLException sqle){

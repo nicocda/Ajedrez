@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 import conexion.ConexionPropuesta;
-import conexion.DataConnection;
 import entidades.Alfil;
 import entidades.Caballo;
 import entidades.Peon;

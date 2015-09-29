@@ -20,17 +20,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
-import conexion.DataConnection;
 
 import javax.swing.JTextArea;
 
 import negocio.ControladorPartida;
 import entidades.Jugador;
 import entidades.Partida;
+import entidades.Trebejo;
 
 public class Presentacion extends JFrame {
 
@@ -74,6 +72,41 @@ public class Presentacion extends JFrame {
 		panel_2.setBounds(0, 0, 424, 251);
 		contentPane.add(panel_2);
 		panel_2.setVisible(false);
+
+		
+		JLabel lblFichasDe = new JLabel("Fichas de:");
+		lblFichasDe.setFont(new Font("Verdana", Font.BOLD, 16));
+		lblFichasDe.setBounds(38, 22, 89, 44);
+		panel_2.add(lblFichasDe);
+		
+		JLabel lblFichasDe_1 = new JLabel("Fichas de:");
+		lblFichasDe_1.setFont(new Font("Verdana", Font.BOLD, 16));
+		lblFichasDe_1.setBounds(238, 22, 89, 44);
+		panel_2.add(lblFichasDe_1);
+		
+		JList list_1 = new JList();
+		DefaultListModel model_1 = new DefaultListModel();
+		list_1.setBounds(38, 61, 135, 120);
+		panel_2.add(list_1);
+		
+		JList list_2 = new JList();
+		DefaultListModel model_2 = new DefaultListModel();
+		list_2.setBounds(257, 61, 135, 120);
+		panel_2.add(list_2);
+		
+		textField = new JTextField();
+		textField.setColumns(10);
+		textField.setBounds(139, 192, 53, 20);
+		panel_2.add(textField);
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		textField_1.setBounds(202, 192, 53, 20);
+		panel_2.add(textField_1);
+		
+		JLabel label_2 = new JLabel("Posicion Final: ");
+		label_2.setBounds(38, 192, 104, 20);
+		panel_2.add(label_2);
 
 		JPanel panel_inicial = new JPanel();
 		panel_inicial.setBounds(5, 5, 424, 251);
@@ -121,16 +154,28 @@ public class Presentacion extends JFrame {
 				
 				int j1 =Integer.parseInt( txtDni.getText());
 				int j2 =Integer.parseInt( txtDni2.getText());
-							
+					
+						Partida p=null;
+						try {
+							p = cp.cargarPartida(j1, j2);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						
-					try {
-						Partida p = cp.cargarPartida(j1, j2);
 						lblJ1.setText(p.getBlanco().getNombre());
 						lblJ2.setText(p.getNegro().getNombre());
-					} catch (Exception e) {
+						ArrayList<Trebejo> trebs = p.getFichas();
+						for (Trebejo t  :trebs){
+							if(t.getColor()){
+								model_1.addElement(t);
+							}else{
+								model_2.addElement(t);
+							}
+						}
+						list_1.setModel(model_1);
+						list_2.setModel(model_2);
 					
-						e.printStackTrace();
-					}
 					
 				panel_inicial.setVisible(false);
 				panel_2.setVisible(true);
@@ -157,38 +202,6 @@ public class Presentacion extends JFrame {
 		
 		
 	
-		
-		JLabel lblFichasDe = new JLabel("Fichas de:");
-		lblFichasDe.setFont(new Font("Verdana", Font.BOLD, 16));
-		lblFichasDe.setBounds(38, 22, 89, 44);
-		panel_2.add(lblFichasDe);
-		
-		JLabel lblFichasDe_1 = new JLabel("Fichas de:");
-		lblFichasDe_1.setFont(new Font("Verdana", Font.BOLD, 16));
-		lblFichasDe_1.setBounds(238, 22, 89, 44);
-		panel_2.add(lblFichasDe_1);
-		
-		JList list_1 = new JList();
-		list_1.setBounds(38, 61, 135, 120);
-		panel_2.add(list_1);
-		
-		JList list_2 = new JList();
-		list_2.setBounds(257, 61, 135, 120);
-		panel_2.add(list_2);
-		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(139, 192, 53, 20);
-		panel_2.add(textField);
-		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(202, 192, 53, 20);
-		panel_2.add(textField_1);
-		
-		JLabel label_2 = new JLabel("Posicion Final: ");
-		label_2.setBounds(38, 192, 104, 20);
-		panel_2.add(label_2);
 		
 		JButton button = new JButton("Mover");
 		button.addMouseListener(new MouseAdapter() {

@@ -3,7 +3,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import conexion.DataConnection;
 import datos.*;
 import entidades.Jugador;
 import entidades.Partida;

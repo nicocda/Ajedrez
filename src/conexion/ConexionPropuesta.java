@@ -18,7 +18,7 @@ public class ConexionPropuesta
 	
 	private static String dbUrl="jdbc:mysql://localhost:3306/ajedrez";
 	private static String dbUser="root";
-	private static String dbPassword="";
+	private static String dbPassword="root";
 	
 	//Construtor Default
 	private ConexionPropuesta()
@@ -31,7 +31,8 @@ public class ConexionPropuesta
 		{
 		try 
 		{
-			if(conn==null || !conn.isValid(3))
+			if(conn==null //|| !conn.isValid(3)
+					)
 			{
 				Class.forName("com.mysql.jdbc.Driver").newInstance();
 				conn=DriverManager.getConnection(dbUrl,dbUser,dbPassword);	
