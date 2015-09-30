@@ -37,6 +37,9 @@ public class Presentacion extends JFrame {
 	private JTextField txtDni2;
 	private JTextField textField;
 	private JTextField textField_1;
+	private JLabel lblJ1, lblJ2;
+	private ControladorPartida cp = new ControladorPartida();
+	
 
 	/**
 	 * Launch the application.
@@ -59,7 +62,7 @@ public class Presentacion extends JFrame {
 	 * Create the frame.
 	 */
 	public Presentacion() {
-		ControladorPartida cp = new ControladorPartida();
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -113,12 +116,12 @@ public class Presentacion extends JFrame {
 		contentPane.add(panel_inicial);
 		panel_inicial.setLayout(null);
 	
-		JLabel lblJ1 = new JLabel("Jugador 1");
+		lblJ1 = new JLabel("Jugador 1");
 		lblJ1.setFont(new Font("Verdana", Font.BOLD, 16));
 		lblJ1.setBounds(130, 22, 98, 44);
 		panel_2.add(lblJ1);
 		
-		JLabel lblJ2 = new JLabel("Jugador 2");
+		lblJ2 = new JLabel("Jugador 2");
 		lblJ2.setFont(new Font("Verdana", Font.BOLD, 16));
 		lblJ2.setBounds(337, 22, 89, 44);
 		panel_2.add(lblJ2);
@@ -150,35 +153,44 @@ public class Presentacion extends JFrame {
 		btnJugar.addMouseListener(new MouseAdapter() {
 			@Override
 		
-			public void mouseClicked(MouseEvent arg0) {
+public void mouseClicked(MouseEvent arg0) {
 				
 				int j1 =Integer.parseInt( txtDni.getText());
 				int j2 =Integer.parseInt( txtDni2.getText());
 					
 						Partida p=null;
-						try {
-							p = cp.cargarPartida(j1, j2);
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
 						
+								p = cp.cargarPartida(j1, j2);
+								if((p.getBlanco()== null) || (p.getNegro()== null)){
+									JOptionPane.showMessageDialog(panel_2,"Jugador no existe, ingrese otro");
+								}
+								else {
+									lblJ1.setText(p.getBlanco().getNombre());
+									lblJ2.setText(p.getNegro().getNombre());
+									ArrayList<Trebejo> trebs = p.getFichas();
+									for (Trebejo t  :trebs){
+										if(t.getColor()){
+											model_1.addElement(t);
+										}else{
+											model_2.addElement(t);
+										}
+									}
+									list_1.setModel(model_1);
+									list_2.setModel(model_2);
+									panel_inicial.setVisible(false);
+									panel_2.setVisible(true);
+								}
+						/*if (p!=null){
 						lblJ1.setText(p.getBlanco().getNombre());
-						lblJ2.setText(p.getNegro().getNombre());
-						ArrayList<Trebejo> trebs = p.getFichas();
-						for (Trebejo t  :trebs){
-							if(t.getColor()){
-								model_1.addElement(t);
-							}else{
-								model_2.addElement(t);
-							}
-						}
-						list_1.setModel(model_1);
-						list_2.setModel(model_2);
+						lblJ2.setText(p.getNegro().getNombre());}
+						else{
+							lblJ1.setText("");
+							lblJ2.setText("");
+						}*/
+						
 					
 					
-				panel_inicial.setVisible(false);
-				panel_2.setVisible(true);
+				
 			}
 		});
 		btnJugar.setFont(new Font("Comic Sans MS", Font.BOLD, 14));
@@ -191,10 +203,10 @@ public class Presentacion extends JFrame {
 			public void mouseClicked(MouseEvent arg0) {
 				
 				int dni= Integer.parseInt(txtDni.getText());
-				textArea.setText("DNI Nombre Apellido");
-				ArrayList<Jugador> jgs= cp.buscarOponente(dni);
-				for( Jugador j: jgs){
-				textArea.append(j.getDni()+" "+j.getNombre()+" "+j.getApellido());
+				textArea.setText("");
+				ArrayList<Partida> pts= cp.buscarPartidas(dni);
+				for( Partida p: pts){
+				textArea.append("Dni Blanco  : "+p.getBlanco().getDni()+"       Dni Negro: "+p.getNegro().getDni()+"\n");
 			}}
 		});
 		btnBuscarOponentes.setBounds(243, 31, 133, 23);

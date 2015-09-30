@@ -1,11 +1,11 @@
 package datos;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import conexion.DataConnection;
+//import conexion.DataConnection;
 
 public class CatalogoPartida {
 
-	public boolean existePartida(int j1, int j2) throws SQLException
+/*	public boolean existePartida(int j1, int j2) throws SQLException
 	{
 	DataConnection con = new DataConnection();
 	ResultSet resultado = null;
@@ -20,6 +20,6 @@ public class CatalogoPartida {
 		DataConnection con = new DataConnection();
 		con.setQuery("INSERT INTO partida (blanco, negro) VALUES ("+j1+", "+j2+")");
 		
-		}
+		}*/
 	
 }

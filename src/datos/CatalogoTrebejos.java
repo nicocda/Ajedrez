@@ -3,10 +3,10 @@ import java.sql.*;
 import java.util.ArrayList;
 import entidades.*;
 
-import conexion.DataConnection;
+//import conexion.DataConnection;
 import entidades.Trebejo;
 public class CatalogoTrebejos {
-
+/*
 	public void addTrebejos(int j1, int j2) throws SQLException {
 		DataConnection con = new DataConnection();
 		
@@ -59,5 +59,5 @@ public class CatalogoTrebejos {
 		
 		return array;
 	}
-
+*/
 }

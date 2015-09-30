@@ -31,8 +31,7 @@ public class ConexionPropuesta
 		{
 		try 
 		{
-			if(conn==null //|| !conn.isValid(3)
-					)
+			if(conn==null || !conn.isValid(3))
 			{
 				Class.forName("com.mysql.jdbc.Driver").newInstance();
 				conn=DriverManager.getConnection(dbUrl,dbUser,dbPassword);	

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import conexion.ConexionPropuesta;
 import entidades.Jugador;
 
+
 public class CatalogoJugadoresPropuesto 
 {
 	  private static CatalogoJugadoresPropuesto instance = null;
@@ -72,6 +73,7 @@ public class CatalogoJugadoresPropuesto
 		{
 			try
 			{
+			
 				if(rs!=null)
 				{
 					rs.close();
@@ -143,32 +145,32 @@ public class CatalogoJugadoresPropuesto
 	public Jugador buscarJugador(int dni)
 	{
 		//listaJugadores = new ArrayList<Jugador>();
-		String sql="select * from jugadores where nombre = "+ Integer.toString(dni);
+		String sql="select * from jugadores where dni = "+ Integer.toString(dni);
 		Statement sentencia=null;
-		ResultSet rs=null;
+		ResultSet res=null;
 		Jugador j = null;
 		
 		try 
 		{			
 			sentencia= ConexionPropuesta.getInstancia().getConn().createStatement();
-			rs= sentencia.executeQuery(sql);
+			res= sentencia.executeQuery(sql);
 			
-			while(rs.next())
+			while(res.next())
 			{
-				j = new Jugador(rs.getInt(1), rs.getString(2), rs.getString(3));
+				j = new Jugador(res.getInt(1), res.getString(2), res.getString(3));
 			}
 		}
 		catch (SQLException e) 
 		{
 			e.printStackTrace();
 		}
-		finally
+		/*finally
 		{
 			try
 			{
-				if(rs!=null)
+				if(res!=null && !res.isClosed())
 				{
-					rs.close();
+					res.close();
 				}
 				if(sentencia!=null && !sentencia.isClosed())
 				{
@@ -180,8 +182,10 @@ public class CatalogoJugadoresPropuesto
 			{
 				sqle.printStackTrace();
 			}
-		}
+		}*/
 	return(j);
+	}
+	
 	}
 
 
@@ -256,4 +260,3 @@ public class CatalogoJugadoresPropuesto
 
 */
 
-}

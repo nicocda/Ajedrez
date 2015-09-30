@@ -38,7 +38,9 @@ public class CatalogoTrebejosPropuesto
 	public ArrayList<Trebejo> buscarTrebejos(int blanco, int negro)
 	{
 		listaTrebejos = new ArrayList<Trebejo>();
-		String sql="select tipo, posx, posy, color from partida where dni1="+Integer.toString(blanco)+" and dni="+Integer.toString(negro);
+		String sql="select tipo, posx, posy, color from partida p"
+				+ "inner join trebejos t on t.dni1="+Integer.toString(blanco)+" and t.dni2="+Integer.toString(negro)
+				+ " where blanco="+Integer.toString(blanco)+" and negro="+Integer.toString(negro);
 		Statement sentencia=null;
 		ResultSet rs=null;
 		

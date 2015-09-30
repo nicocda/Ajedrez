@@ -1,12 +1,12 @@
 package datos;
 
-import conexion.DataConnection;
+//import conexion.DataConnection;
 import entidades.Jugador;
 
 import java.sql.*;
 
 public class CatalogoJugadores {
-
+/*
 	public Jugador buscarJugador(int dni) throws Exception{
 		DataConnection con = new DataConnection();
 		
@@ -24,7 +24,7 @@ public class CatalogoJugadores {
 	}
 	
 	
-	
+	*/
 	
 	
 	

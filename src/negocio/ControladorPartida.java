@@ -12,10 +12,11 @@ public class ControladorPartida {
 		CatalogoPartidaPropuesto cp = new CatalogoPartidaPropuesto();
 		CatalogoTrebejosPropuesto ct = new CatalogoTrebejosPropuesto();
 		CatalogoJugadoresPropuesto cj = new CatalogoJugadoresPropuesto();
-	public Partida cargarPartida(int dni1, int dni2) throws Exception{
+	public Partida cargarPartida(int dni1, int dni2) {
 		//CatalogoPartida cp = new CatalogoPartida();
 		//CatalogoTrebejos ct = new CatalogoTrebejos();
 		//CatalogoJugadores cj = new CatalogoJugadores();
+		
 		
 		Jugador j1 = cj.buscarJugador(dni1);
 		Jugador j2 = cj.buscarJugador(dni2);
@@ -31,18 +32,18 @@ public class ControladorPartida {
 		
 	}
 
-	public ArrayList<Jugador> buscarOponente(int dni){
+	public ArrayList<Partida> buscarPartidas(int dni){
 		ArrayList<Partida> listaPartidas = new ArrayList<Partida>();
-		ArrayList<Jugador>	jugadores = new ArrayList<Jugador>();
+		//ArrayList<Jugador>	jugadores = new ArrayList<Jugador>();
 		listaPartidas = cp.buscarPartidas(dni);
-		for (Partida p : listaPartidas){
+		/*for (Partida p : listaPartidas){
 			if(dni == p.getBlanco().getDni()){
 				jugadores.add(p.getNegro());
 			}else{
 				jugadores.add(p.getBlanco());
 			}
-		};
-		return(jugadores);
+		};*/
+		return(listaPartidas);
 		/*String query="select  p.blanco, p.negro, jn.nombre, jn.apellido, jb.nombre, jb.apellido from partida p inner join jugadores jb on p.blanco=jb.dni inner join jugadores jn on p.negro=jn.dni where blanco=? or negro=?";
 		cp.buscarPartidas(dni);
 		
