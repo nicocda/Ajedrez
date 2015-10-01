@@ -105,7 +105,6 @@ public class CatalogoTrebejosPropuesto
 		}	*/
 		return(listaTrebejos);
 	}
-	
 	//Agrego los 32 trebejos a la lista listaTrebejos.
 	public void addTrebejos(int dni1, int dni2){
 		listaTrebejos = new ArrayList<Trebejo>();
@@ -200,6 +199,15 @@ public class CatalogoTrebejosPropuesto
 		}	
 		
 		
+	}
+	
+	public void realizarModificacion(int posX, int posY){
+		Trebejo t;
+		String sql;
+		PreparedStatement sentencia=null;
+		Connection con = ConexionPropuesta.getInstancia().getConn();
+		//FALTA HACER EL DELETE E INSERTE O UPDATE(no existe variable ne la db fichaMuerta).
+		sql = "DELETE + INSERT o UPDATE";
 	}
 	
 }

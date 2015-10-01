@@ -37,8 +37,8 @@ public class Presentacion extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtDni;
 	private JTextField txtDni2;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField movX;
+	private JTextField movY;
 	private JLabel lblJ1, lblJ2;
 	private ControladorPartida cp = new ControladorPartida();
 	
@@ -79,12 +79,12 @@ public class Presentacion extends JFrame {
 		panel_2.setVisible(false);
 
 		
-		JLabel lblFichasDe = new JLabel("Fichas de:");
+		JLabel lblFichasDe = new JLabel("Blancas: ");
 		lblFichasDe.setFont(new Font("Verdana", Font.BOLD, 16));
 		lblFichasDe.setBounds(38, 22, 89, 44);
 		panel_2.add(lblFichasDe);
 		
-		JLabel lblFichasDe_1 = new JLabel("Fichas de:");
+		JLabel lblFichasDe_1 = new JLabel("Negras: ");
 		lblFichasDe_1.setFont(new Font("Verdana", Font.BOLD, 16));
 		lblFichasDe_1.setBounds(238, 22, 89, 44);
 		panel_2.add(lblFichasDe_1);
@@ -99,15 +99,15 @@ public class Presentacion extends JFrame {
 		list_2.setBounds(257, 61, 135, 120);
 		panel_2.add(list_2);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(139, 192, 53, 20);
-		panel_2.add(textField);
+		movX = new JTextField();
+		movX.setColumns(10);
+		movX.setBounds(139, 192, 53, 20);
+		panel_2.add(movX);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(202, 192, 53, 20);
-		panel_2.add(textField_1);
+		movY = new JTextField();
+		movY.setColumns(10);
+		movY.setBounds(202, 192, 53, 20);
+		panel_2.add(movY);
 		
 		JLabel label_2 = new JLabel("Posicion Final: ");
 		label_2.setBounds(38, 192, 104, 20);
@@ -136,7 +136,31 @@ public class Presentacion extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				panel_inicial.setVisible(false);
 				panel_2.setVisible(false);
-			}
+				Trebejo t = null;
+				
+				
+				int j1 =Integer.parseInt( txtDni.getText());
+				int j2 =Integer.parseInt( txtDni2.getText());
+				int posX =Integer.parseInt( movX.getText());
+				int posY =Integer.parseInt( movY.getText());
+				Trebejo us = (Trebejo) list_1.getSelectedValue();
+				
+				
+				
+				t = cp.validarMovimiento(j1, j2, posX, posY);
+				if(t == null)
+				{
+					System.out.println("No existe ese trebejo");
+				}
+				else
+				{
+					//LOS DATOS DE LOS PARAMETROS SON LOS DE LA FICHA SELECCIONADA(INICIAL)
+					if(t.movimientoPermitido(us.getPosX(), us.getPosY(), us.getColor()))
+						{
+							System.out.println("Movimiento realizado!");
+						};
+				}
+				}
 		});
 		button.setBounds(292, 192, 89, 23);
 		panel_2.add(button);
@@ -173,7 +197,7 @@ public void mouseClicked(MouseEvent arg0) {
 						
 						int j1 =Integer.parseInt( txtDni.getText());
 						int j2 =Integer.parseInt( txtDni2.getText());
-							
+						//SI UNO DE LOS textFields ESTA VACIO TIRA ERROR(CORREGIR)...	
 								Partida p=null;
 								
 										p = cp.cargarPartida(j1, j2);

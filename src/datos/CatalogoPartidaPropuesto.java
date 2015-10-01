@@ -21,7 +21,8 @@ public class CatalogoPartidaPropuesto
 	   }
 	
 	private ArrayList<Partida> listaPartidas;
-	
+	private CatalogoJugadoresPropuesto cj = new CatalogoJugadoresPropuesto();
+	private CatalogoTrebejosPropuesto ct = new CatalogoTrebejosPropuesto();
 	
 	public boolean existePartida(int j1, int j2) {
 		
@@ -70,8 +71,7 @@ public class CatalogoPartidaPropuesto
 		String sql="select p.blanco, p.negro from partida p where blanco="+j1+" or negro="+j1;
 		Statement sentencia=null;
 		ResultSet rs=null;
-		CatalogoJugadoresPropuesto cj = new CatalogoJugadoresPropuesto();
-		CatalogoTrebejosPropuesto ct = new CatalogoTrebejosPropuesto();
+		
 		try 
 		{			
 			sentencia= ConexionPropuesta.getInstancia().getConn().createStatement();
@@ -82,8 +82,6 @@ public class CatalogoPartidaPropuesto
 			{			
 				//Si encuentro un registro creo una partida y la comienzo a cargar.
 				Partida partida = new Partida();
-				
-				
 				//Con el catalogo ya programado busco los 2 jugadores...
 				int dniB=rs.getInt("p.blanco");
 				int dniN=rs.getInt("p.negro");

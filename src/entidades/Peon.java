@@ -7,7 +7,7 @@ public class Peon extends Trebejo {
 		
 		super(t, x, y, c, d1, d2);
 		boolean s;
-		if(y== 2 || y==7)s=false;
+		if(y== 1 || y==6)s=false;
 		else s=true;
 		setSeMovio(s);
 	

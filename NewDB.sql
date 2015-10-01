@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `ajedrez` /*!40100 DEFAULT CHARACTER SET latin1 */;
 USE `ajedrez`;
--- MySQL dump 10.13  Distrib 5.6.23, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.6.24, for Win64 (x86_64)
 --
 -- Host: localhost    Database: ajedrez
 -- ------------------------------------------------------
--- Server version	5.6.17
+-- Server version	5.6.26-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -38,7 +38,7 @@ CREATE TABLE `jugadores` (
 
 LOCK TABLES `jugadores` WRITE;
 /*!40000 ALTER TABLE `jugadores` DISABLE KEYS */;
-INSERT INTO `jugadores` VALUES (1,'nombre1','ape1'),(2,'nombre2','ape2'),(3,'nombre3','ape3'),(4,'nombre3','ape3'),(5,'nombre3','ape3'),(6,'nombre3','ape3'),(7,'nombre3','ape3'),(8,'nombre3','ape3'),(9,'nombre3','ape3'),(10,'nombre3','ape3'),(11,'nombre3','ape3'),(12,'nombre3','ape3'),(13,'nombre3','ape3'),(14,'nombre3','ape3'),(15,'nombre3','ape3'),(16,'nombre3','ape3'),(17,'nombre3','ape3');
+INSERT INTO `jugadores` VALUES (1,'Nico','Giorda'),(2,'Leo','Peretto'),(3,'Martu','Guereta'),(4,'Facu','Alvarez');
 /*!40000 ALTER TABLE `jugadores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -66,6 +66,7 @@ CREATE TABLE `partida` (
 
 LOCK TABLES `partida` WRITE;
 /*!40000 ALTER TABLE `partida` DISABLE KEYS */;
+INSERT INTO `partida` VALUES (1,2);
 /*!40000 ALTER TABLE `partida` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -81,11 +82,10 @@ CREATE TABLE `trebejos` (
   `posX` int(11) NOT NULL,
   `posY` int(11) NOT NULL,
   `color` tinyint(4) DEFAULT NULL,
-  `dni1` int(11) DEFAULT NULL,
-  `dni2` int(11) DEFAULT NULL,
-  PRIMARY KEY (`posY`,`posX`),
-  KEY `partida_idx` (`dni1`,`dni2`),
-  CONSTRAINT `partida` FOREIGN KEY (`dni1`, `dni2`) REFERENCES `partida` (`blanco`, `negro`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  `dni1` int(11) NOT NULL DEFAULT '1',
+  `dni2` int(11) NOT NULL DEFAULT '2',
+  PRIMARY KEY (`posY`,`posX`,`dni2`,`dni1`),
+  KEY `partida_idx` (`dni1`,`dni2`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -95,6 +95,7 @@ CREATE TABLE `trebejos` (
 
 LOCK TABLES `trebejos` WRITE;
 /*!40000 ALTER TABLE `trebejos` DISABLE KEYS */;
+INSERT INTO `trebejos` VALUES ('T',0,0,1,1,2),('C',1,0,1,1,2),('A',2,0,1,1,2),('K',3,0,1,1,2),('Q',4,0,1,1,2),('A',5,0,1,1,2),('C',6,0,1,1,2),('T',7,0,1,1,2),('P',0,1,1,1,2),('P',1,1,1,1,2),('P',2,1,1,1,2),('P',3,1,1,1,2),('P',4,1,1,1,2),('P',5,1,1,1,2),('P',6,1,1,1,2),('P',7,1,1,1,2),('P',0,6,0,1,2),('P',1,6,0,1,2),('P',2,6,0,1,2),('P',3,6,0,1,2),('P',4,6,0,1,2),('P',5,6,0,1,2),('P',6,6,0,1,2),('P',7,6,0,1,2),('T',0,7,0,1,2),('C',1,7,0,1,2),('A',2,7,0,1,2),('Q',3,7,0,1,2),('K',4,7,0,1,2),('A',5,7,0,1,2),('C',6,7,0,1,2),('T',7,7,0,1,2);
 /*!40000 ALTER TABLE `trebejos` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -107,4 +108,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-09-08 18:41:21
+-- Dump completed on 2015-10-01 19:50:05

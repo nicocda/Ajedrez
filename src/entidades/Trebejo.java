@@ -17,6 +17,18 @@ public abstract class Trebejo{
 		setDni2(d2);
 		
 	}
+	
+	public boolean movimientoPermitido(int posX, int posY, boolean bando){
+		
+		if (this.posX == posX && this.posY == posY && this.color == bando){	
+				return false;
+		}
+		else
+		{
+			return true;
+		}
+		
+	}
 	//Get-Set
 		public int getPosX() {
 		return posX;
