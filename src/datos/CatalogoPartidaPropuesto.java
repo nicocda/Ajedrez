@@ -90,7 +90,7 @@ public class CatalogoPartidaPropuesto
 				partida.setBlanco(cj.buscarJugador(dniB));
 				partida.setNegro(cj.buscarJugador(dniN));
 				//...y los trebejos
-				//ct.buscarTrebejos(rs.getInt("p.blanco"), rs.getInt("p.negro"));
+				ct.buscarTrebejos(rs.getInt("p.blanco"), rs.getInt("p.negro"));
 				
 				partida.setFichas(ct.getListaTrebejos());				
 				listaPartidas.add(partida);
@@ -100,7 +100,7 @@ public class CatalogoPartidaPropuesto
 		{
 			e.printStackTrace();
 		}
-		finally
+		/*finally
 		{
 			try
 			{
@@ -118,7 +118,7 @@ public class CatalogoPartidaPropuesto
 			{
 				sqle.printStackTrace();
 			}
-		}
+		}*/
 		return listaPartidas;	
 	}
 	

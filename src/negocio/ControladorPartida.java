@@ -24,7 +24,7 @@ public class ControladorPartida {
 		if (!cp.existePartida(dni1, dni2))
 		{
 			cp.agregarPartida(dni1, dni2);
-			//ct.addTrebejos(dni1, dni2);
+			ct.addTrebejos(dni1, dni2);
 		}
 		ArrayList<Trebejo> trebejos = ct.buscarTrebejos(dni1,dni2);
 		Partida p = new Partida(j1, j2, trebejos);
