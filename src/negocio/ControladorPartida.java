@@ -70,21 +70,17 @@ public class ControladorPartida {
 	}
 	
 	
-	public Trebejo validarMovimiento(int dni1, int dni2, int posX, int posY){
+	public boolean movimientoPermitido(int posX, int posY, Trebejo treb){
 		
-		Trebejo trebejo = null;
-		ArrayList<Trebejo> treb = ct.buscarTrebejos(dni1, dni2);
-		for(int i = 0; i < treb.size(); i++)
+		if(treb.movimientoPermitido(posX, posY, treb))
 		{
-			if (treb.get(i).getPosX() == posX && treb.get(i).getPosY() == posY)
-			{
-			trebejo = treb.get(i);		
-			}
-			break;
-		}		
-		
-		return trebejo;
-				
+			//Seteo nuevas posicionfinal	
+			treb.setPosX(posX);
+			treb.setPosY(posY);
+			ct.realizarModificacion(treb);
+			return true;
+		}
+		else return false;
 	}
 
 

@@ -146,21 +146,14 @@ public class Presentacion extends JFrame {
 				Trebejo us = (Trebejo) list_1.getSelectedValue();
 				
 				
+				if(us!=null)
+				{
+					if(cp.movimientoPermitido(posX, posY, us));
+				} else{
+					JOptionPane.showMessageDialog(panel_2,"trebejo no existe");
+						}
+			}
 				
-				t = cp.validarMovimiento(j1, j2, posX, posY);
-				if(t == null)
-				{
-					System.out.println("No existe ese trebejo");
-				}
-				else
-				{
-					//LOS DATOS DE LOS PARAMETROS SON LOS DE LA FICHA SELECCIONADA(INICIAL)
-					if(t.movimientoPermitido(us.getPosX(), us.getPosY(), us.getColor()))
-						{
-							System.out.println("Movimiento realizado!");
-						};
-				}
-				}
 		});
 		button.setBounds(292, 192, 89, 23);
 		panel_2.add(button);
