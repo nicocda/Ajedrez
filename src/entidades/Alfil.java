@@ -11,18 +11,18 @@ public class Alfil extends Trebejo {
 	
 	public boolean movimientoPermitido(int posX, int posY, Trebejo treb){
 		
-		if (posY > 7 || posY < 0)
+		if (posY > 7 || posY < 0 || posX > 7 || posX < 0)
             return false;
-		if (posX > 7 || posX < 0)
-            return false;
-		
-		int difFil, difCol;
-		difFil = Math.abs(this.posX - posX);
-        difCol = Math.abs(this.posY - posY);
-        if(difFil == difCol) 
-        	if(this.color != treb.color)
+		else{
+			int movX =Math.abs(this.posX - posX);
+			int movY = Math.abs(this.posY - posY);
+			if (treb==null){
+			if(movX == movY)
 			return true;
-			return false;
-        	
+        else return false;}
+			else if(this.color != treb.color)
+				return true;
+			else return false;
+		}
 	}
 }

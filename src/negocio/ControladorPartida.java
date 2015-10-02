@@ -1,6 +1,4 @@
 package negocio;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import datos.*;
@@ -70,18 +68,16 @@ public class ControladorPartida {
 	}
 	
 	
-	public boolean movimientoPermitido(int posX, int posY, Trebejo treb){
-		
-		if(treb.movimientoPermitido(posX, posY, treb))
+	public void mover(int posX, int posY, Trebejo treb, int dni1, int dni2){
+		Trebejo trebOtro = ct.buscarTrebejo(posX,posY,dni1,dni2);
+		//FAlta hacer el movimiento del peon y de la reina, besos Rosa
+		if(treb.movimientoPermitido(posX, posY, trebOtro))
 		{
-			//Seteo nuevas posicionfinal	
-			treb.setPosX(posX);
-			treb.setPosY(posY);
-			ct.realizarModificacion(treb);
-			return true;
+			ct.realizarModificacion(posX, posY, treb);
 		}
-		else return false;
+		}
+		
 	}
 
 
-}
+

@@ -5,7 +5,10 @@ public abstract class Trebejo{
 	protected char tipo;
 	protected boolean color;
 	
-	
+	@Override
+	public String toString(){
+		return "Tipo: "+this.tipo+"  Posicion: ("+this.posX+"),("+this.posY+")";
+	}
 	
 	public Trebejo(char t, int x, int y, boolean c, int d1, int d2){
 

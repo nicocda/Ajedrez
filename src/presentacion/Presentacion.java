@@ -66,120 +66,54 @@ public class Presentacion extends JFrame {
 	public Presentacion() {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 450, 490);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
+		
+		JPanel panel_inicial = new JPanel();
+		panel_inicial.setBounds(5, 5, 424, 490);
+		contentPane.add(panel_inicial);
+		panel_inicial.setLayout(null);
+		
 		JPanel panel_2 = new JPanel();
 		panel_2.setLayout(null);
-		panel_2.setBounds(0, 0, 424, 251);
+		panel_2.setBounds(0, 0, 424, 490);
 		contentPane.add(panel_2);
 		panel_2.setVisible(false);
-
-		
-		JLabel lblFichasDe = new JLabel("Blancas: ");
-		lblFichasDe.setFont(new Font("Verdana", Font.BOLD, 16));
-		lblFichasDe.setBounds(38, 22, 89, 44);
-		panel_2.add(lblFichasDe);
-		
-		JLabel lblFichasDe_1 = new JLabel("Negras: ");
-		lblFichasDe_1.setFont(new Font("Verdana", Font.BOLD, 16));
-		lblFichasDe_1.setBounds(238, 22, 89, 44);
-		panel_2.add(lblFichasDe_1);
 		
 		JList list_1 = new JList();
 		DefaultListModel model_1 = new DefaultListModel();
-		list_1.setBounds(38, 61, 135, 120);
+		list_1.setBounds(38, 61, 135, 304);
 		panel_2.add(list_1);
 		
 		JList list_2 = new JList();
 		DefaultListModel model_2 = new DefaultListModel();
-		list_2.setBounds(257, 61, 135, 120);
+		list_2.setBounds(257, 61, 135, 304);
 		panel_2.add(list_2);
-		
-		movX = new JTextField();
-		movX.setColumns(10);
-		movX.setBounds(139, 192, 53, 20);
-		panel_2.add(movX);
-		
-		movY = new JTextField();
-		movY.setColumns(10);
-		movY.setBounds(202, 192, 53, 20);
-		panel_2.add(movY);
-		
-		JLabel label_2 = new JLabel("Posicion Final: ");
-		label_2.setBounds(38, 192, 104, 20);
-		panel_2.add(label_2);
-	
-		lblJ1 = new JLabel("Jugador 1");
-		lblJ1.setFont(new Font("Verdana", Font.BOLD, 16));
-		lblJ1.setBounds(130, 22, 98, 44);
-		panel_2.add(lblJ1);
-		
-		lblJ2 = new JLabel("Jugador 2");
-		lblJ2.setFont(new Font("Verdana", Font.BOLD, 16));
-		lblJ2.setBounds(337, 22, 89, 44);
-		panel_2.add(lblJ2);
-		
-		JPanel panel_inicial = new JPanel();
-			panel_inicial.setBounds(5, 5, 424, 251);
-			contentPane.add(panel_inicial);
-			panel_inicial.setLayout(null);
-				
-	
-		
-		JButton button = new JButton("Mover");
-		button.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				panel_inicial.setVisible(false);
-				panel_2.setVisible(false);
-				Trebejo t = null;
-				
-				
-				int j1 =Integer.parseInt( txtDni.getText());
-				int j2 =Integer.parseInt( txtDni2.getText());
-				int posX =Integer.parseInt( movX.getText());
-				int posY =Integer.parseInt( movY.getText());
-				Trebejo us = (Trebejo) list_1.getSelectedValue();
-				
-				
-				if(us!=null)
-				{
-					if(cp.movimientoPermitido(posX, posY, us));
-				} else{
-					JOptionPane.showMessageDialog(panel_2,"trebejo no existe");
-						}
-			}
-				
-		});
-		button.setBounds(292, 192, 89, 23);
-		panel_2.add(button);
-		
 				
 				txtDni = new JTextField();
 				txtDni.setBounds(124, 32, 98, 20);
 				panel_inicial.add(txtDni);
 				txtDni.setColumns(10);
 				
-				JLabel lblIngreseSuDni = new JLabel("Ingrese DNI: ");
+				JLabel lblIngreseSuDni = new JLabel("DNI Tuyo :");
 				lblIngreseSuDni.setBounds(36, 35, 79, 14);
 				panel_inicial.add(lblIngreseSuDni);
 				
 				JTextArea textArea = new JTextArea();
-				textArea.setBounds(36, 60, 340, 87);
+				textArea.setBounds(36, 103, 340, 257);
 				panel_inicial.add(textArea);
 				
 				
 				txtDni2 = new JTextField();
-				txtDni2.setBounds(36, 152, 262, 20);
+				txtDni2.setBounds(124, 72, 252, 20);
 				panel_inicial.add(txtDni2);
 				txtDni2.setColumns(10);
 				
-				JLabel lblDniOponente = new JLabel(": DNI Oponente");
-				lblDniOponente.setBounds(308, 153, 87, 14);
+				JLabel lblDniOponente = new JLabel("DNI Oponente :");
+				lblDniOponente.setBounds(36, 75, 87, 14);
 				panel_inicial.add(lblDniOponente);
 				
 				JButton btnJugar = new JButton("Jugar");
@@ -227,7 +161,7 @@ public void mouseClicked(MouseEvent arg0) {
 					}
 				});
 				btnJugar.setFont(new Font("Comic Sans MS", Font.BOLD, 14));
-				btnJugar.setBounds(36, 178, 359, 34);
+				btnJugar.setBounds(36, 371, 359, 34);
 				panel_inicial.add(btnJugar);
 				
 				JButton btnBuscarOponentes = new JButton("Buscar Oponentes");
@@ -248,6 +182,70 @@ public void mouseClicked(MouseEvent arg0) {
 				});
 				btnBuscarOponentes.setBounds(243, 31, 133, 23);
 				panel_inicial.add(btnBuscarOponentes);
+
+		
+
+		
+		JLabel lblFichasDe = new JLabel("Blancas: ");
+		lblFichasDe.setFont(new Font("Verdana", Font.BOLD, 16));
+		lblFichasDe.setBounds(38, 22, 89, 44);
+		panel_2.add(lblFichasDe);
+		
+		JLabel lblFichasDe_1 = new JLabel("Negras: ");
+		lblFichasDe_1.setFont(new Font("Verdana", Font.BOLD, 16));
+		lblFichasDe_1.setBounds(238, 22, 89, 44);
+		panel_2.add(lblFichasDe_1);
+		
+		
+		
+		movX = new JTextField();
+		movX.setColumns(10);
+		movX.setBounds(139, 384, 53, 20);
+		panel_2.add(movX);
+		
+		movY = new JTextField();
+		movY.setColumns(10);
+		movY.setBounds(202, 384, 53, 20);
+		panel_2.add(movY);
+		
+		JLabel label_2 = new JLabel("Posicion Final: ");
+		label_2.setBounds(38, 384, 104, 20);
+		panel_2.add(label_2);
+	
+		lblJ1 = new JLabel("Jugador 1");
+		lblJ1.setFont(new Font("Verdana", Font.BOLD, 16));
+		lblJ1.setBounds(130, 22, 98, 44);
+		panel_2.add(lblJ1);
+		
+		lblJ2 = new JLabel("Jugador 2");
+		lblJ2.setFont(new Font("Verdana", Font.BOLD, 16));
+		lblJ2.setBounds(337, 22, 89, 44);
+		panel_2.add(lblJ2);
+				
+	
+		
+		JButton button = new JButton("Mover");
+		button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				panel_inicial.setVisible(true);
+				panel_2.setVisible(false);
+				int j1 =Integer.parseInt( txtDni.getText());
+				int j2 =Integer.parseInt( txtDni2.getText());
+				int posX =Integer.parseInt( movX.getText());
+				int posY =Integer.parseInt( movY.getText());
+				Trebejo us = (Trebejo) list_1.getSelectedValue();
+				if(us!=null)
+				{
+					cp.mover(posX, posY, us,j1,j2);
+				} else{
+					JOptionPane.showMessageDialog(panel_2,"trebejo no existe");
+						}
+			}
+				
+		});
+		button.setBounds(292, 384, 89, 23);
+		panel_2.add(button);
 		
 		
 	}

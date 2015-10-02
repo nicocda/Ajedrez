@@ -13,7 +13,9 @@ public class Peon extends Trebejo {
 	
 	}
 		
-	
+	public boolean movimientoPermitido(int posX, int posY, Trebejo treb){
+		return true;
+	}
 	//Get-Set
 	public boolean isSeMovio() {
 		return seMovio;

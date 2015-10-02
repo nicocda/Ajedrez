@@ -34,6 +34,9 @@ public class CatalogoTrebejosPropuesto
 		return listaTrebejos;
 	}
 	
+	
+	
+	
 	//Busco los trebejos correspondiente a 2 jugadores (una partida)
 	public ArrayList<Trebejo> buscarTrebejos(int dni1, int dni2)
 	{
@@ -201,13 +204,72 @@ public class CatalogoTrebejosPropuesto
 		
 	}
 	
-	public void realizarModificacion(Trebejo treb){
+	public void realizarModificacion(int posX, int posY, Trebejo treb){
 		String sql;
 		PreparedStatement sentencia=null;
 		Connection con = ConexionPropuesta.getInstancia().getConn();
-		//FALTA HACER EL DELETE E INSERTE O UPDATE(no existe variable ne la db fichaMuerta).
-		sql = "DELETE + INSERT o UPDATE";
-		//MODIFICAR EL ARRAYLIST DE TREBEJOS P LUEGO CARGARLO
+		sql = "UPDATE `ajedrez`.`trebejos` SET `posX` =?, `posY` = ? WHERE `posX` = ? AND `posY` = ? AND `dni1` = ? AND `dni2` = ?;";
+		try {
+			sentencia = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			sentencia.setInt(1,posX);
+			sentencia.setInt(2, posY);
+			sentencia.setInt(3,treb.getPosX());
+			sentencia.setInt(4, treb.getPosY());
+			sentencia.setInt(5, treb.getDni1());
+			sentencia.setInt(6, treb.getDni2());
+			sentencia.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for(Trebejo tb: listaTrebejos){
+			if(tb.getPosX()==treb.getPosX() && tb.getPosY()==treb.getPosY() && tb.getDni1()== treb.getDni1() && tb.getDni2() == treb.getDni2()){
+				tb.setPosX(posX);
+				tb.setPosY(posY);
+			}
+		}
+	}
+	
+	public Trebejo buscarTrebejo(int posX, int posY, int dni1, int dni2){
+		PreparedStatement sentencia=null;
+		Connection con = ConexionPropuesta.getInstancia().getConn();
+		String sql = "Select * from trebejos t where t.posY = ? AND t.posX = ? AND t.dni1 = ? AND t.dni2 = ? ;";
+		ResultSet rs= null;
+		Trebejo t = null;
+		try{
+			sentencia = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			sentencia.setInt(1,posY);
+			sentencia.setInt(2,posX);
+			sentencia.setInt(3,dni1);
+			sentencia.setInt(4,dni2);
+			rs= sentencia.executeQuery();
+		
+		
+		if(rs.next()){
+			char tipo=rs.getString(1).charAt(0);
+			boolean color=rs.getBoolean(4);
+			switch(tipo)
+			{
+			case 'P' : t= new Peon(tipo, posX, posY, color, dni1, dni2);
+						break;
+			case 'T' : t= new Torre(tipo, posX, posY, color, dni1, dni2);
+						break;
+			case 'C' : t= new Caballo(tipo, posX, posY, color, dni1, dni2);
+						break;
+			case 'A' : t= new Alfil(tipo, posX, posY, color, dni1, dni2);
+						break;
+			case 'R' : t= new Rey(tipo, posX, posY, color, dni1, dni2);
+						break;
+			case 'D' : t=new Reina(tipo, posX, posY, color, dni1, dni2);
+						break;
+			default: t = null;
+						break;
+			}}
+		}
+			catch(SQLException e){
+			e.printStackTrace();
+		}	
+	return t;
 	}
 	
 }

@@ -11,23 +11,23 @@ public class Caballo extends Trebejo {
 	
 	
 		public boolean movimientoPermitido(int posX, int posY, Trebejo treb){
-			/*	
-			if (posY > 7 || posY < 0)
-		          return false;
-			if (posX > 7 || posX < 0)
-		          return false;
-			
-			if( (this.posX ==pos2X+2 && this.getPosY() == pos2Y+1) ||
-					(this.getPosX()==pos2X+2 && this.getPosY() == pos2Y-1) ||
-					(this.getPosX()==pos2X-2 && this.getPosY() == pos2Y+1) ||
-					(this.getPosX()==pos2X-2 && this.getPosY() == pos2Y-1)||
-				(this.getPosY()==pos2Y+2 && this.getPosX() == pos2X+1) ||
-				(this.getPosY()==pos2Y+2 && this.getPosX() == pos2X-1) ||
-				(this.getPosY()==pos2Y-2 && this.getPosX() == pos2X+1) ||
-				(this.getPosY()==pos2Y-2 && this.getPosX() == pos2X-1)){
-				return true;
-			}else{
-			return false;
-			 }*/ return false;
+			 if (posY > 7 || posY < 0 || posX > 7 || posX < 0)
+		            return false;
+				else{
+					if (treb==null){
+					if((this.posX ==posX+2 && this.getPosY() == posY+1) ||
+							(this.getPosX()==posX+2 && this.getPosY() == posY-1) ||
+							(this.getPosX()==posX-2 && this.getPosY() == posY+1) ||
+							(this.getPosX()==posX-2 && this.getPosY() == posY-1)||
+						(this.getPosY()==posY+2 && this.getPosX() == posX+1) ||
+						(this.getPosY()==posY+2 && this.getPosX() == posX-1) ||
+						(this.getPosY()==posY-2 && this.getPosX() == posX+1) ||
+						(this.getPosY()==posY-2 && this.getPosX() == posX-1))
+					return true;
+		        else return false;}
+					else if(this.color != treb.color)
+						return true;
+					else return false;
+				}
 		}			
 }
