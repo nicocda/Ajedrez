@@ -19,6 +19,7 @@ import entidades.Trebejo;
 public class CatalogoTrebejosPropuesto
 {
 	private ArrayList<Trebejo> listaTrebejos;
+	static private ArrayList<Trebejo> trebejos;
 	private static CatalogoTrebejosPropuesto instance = null;
 	public CatalogoTrebejosPropuesto() {
 	   }
@@ -103,6 +104,24 @@ public class CatalogoTrebejosPropuesto
 			}
 		}	
 		return(listaTrebejos);
+	}
+	
+	
+	public void addTrebejos(int j1, int j2){
+		
+		for(int i = 0; i<8; i++){
+			Peon pe = new Peon('P', i, 2, true, j1, j2);
+			trebejos.add(pe);
+		}
+		Caballo c1 = new Caballo('C', 3, 1, true, j1, j2);
+		trebejos.add(c1);
+		Caballo c2 = new Caballo('C', 3, 1, true, j1, j2);
+		for(int i = 0; i<8; i++){
+			Peon pe = new Peon('P', i, 7, false, j1, j2);
+			trebejos.add(pe);
+		}
+			//LEO... Falta terminar
+		
 	}
 	
 	/*public void addTrebejos(int j1, int j2) {
