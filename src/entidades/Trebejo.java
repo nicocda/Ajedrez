@@ -1,9 +1,9 @@
 package entidades;
 
 public abstract class Trebejo{
-	private int posX, posY,dni1,dni2;
-	private char tipo;
-	private boolean color;
+	protected int posX, posY,dni1,dni2;
+	protected char tipo;
+	protected boolean color;
 	
 	
 	
@@ -18,17 +18,9 @@ public abstract class Trebejo{
 		
 	}
 	
-	public boolean movimientoPermitido(int posX, int posY, boolean bando){
+	
+	public abstract boolean movimientoPermitido(int posX, int posY, Trebejo treb);	
 		
-		if (this.posX == posX && this.posY == posY && this.color == bando){	
-				return false;
-		}
-		else
-		{
-			return true;
-		}
-		
-	}
 	//Get-Set
 		public int getPosX() {
 		return posX;

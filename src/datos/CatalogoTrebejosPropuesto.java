@@ -201,13 +201,13 @@ public class CatalogoTrebejosPropuesto
 		
 	}
 	
-	public void realizarModificacion(int posX, int posY){
-		Trebejo t;
+	public void realizarModificacion(Trebejo treb){
 		String sql;
 		PreparedStatement sentencia=null;
 		Connection con = ConexionPropuesta.getInstancia().getConn();
 		//FALTA HACER EL DELETE E INSERTE O UPDATE(no existe variable ne la db fichaMuerta).
 		sql = "DELETE + INSERT o UPDATE";
+		//MODIFICAR EL ARRAYLIST DE TREBEJOS P LUEGO CARGARLO
 	}
 	
 }

@@ -135,6 +135,7 @@ public class Presentacion extends JFrame {
 		btnMover.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+<<<<<<< HEAD
 				//Todo esto sería ideal que esté en un método aparte, privado (Cuando hicimos lo de 
 				//windows form de mecca, en clases, me acuerdo que una de las cosas que me corrigio fue eso.
 				pnlSeleccionPartidas.setVisible(false);
@@ -166,6 +167,28 @@ public class Presentacion extends JFrame {
 					};
 				}
 			}
+=======
+				panel_inicial.setVisible(false);
+				panel_2.setVisible(false);
+				Trebejo t = null;
+				
+				
+				int j1 =Integer.parseInt( txtDni.getText());
+				int j2 =Integer.parseInt( txtDni2.getText());
+				int posX =Integer.parseInt( movX.getText());
+				int posY =Integer.parseInt( movY.getText());
+				Trebejo us = (Trebejo) list_1.getSelectedValue();
+				
+				
+				if(us!=null)
+				{
+					if(cp.movimientoPermitido(posX, posY, us));
+				} else{
+					JOptionPane.showMessageDialog(panel_2,"trebejo no existe");
+						}
+			}
+				
+>>>>>>> d6b6eefdbbcaa6a8b6a4acf1ca0edeac002ba490
 		});
 		
 		btnMover.setBounds(292, 192, 89, 23);

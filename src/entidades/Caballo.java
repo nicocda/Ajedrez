@@ -7,4 +7,27 @@ public class Caballo extends Trebejo {
 		
 		super(t, x, y, c, d1, d2);
 	}
+	
+	
+	
+		public boolean movimientoPermitido(int posX, int posY, Trebejo treb){
+			/*	
+			if (posY > 7 || posY < 0)
+		          return false;
+			if (posX > 7 || posX < 0)
+		          return false;
+			
+			if( (this.posX ==pos2X+2 && this.getPosY() == pos2Y+1) ||
+					(this.getPosX()==pos2X+2 && this.getPosY() == pos2Y-1) ||
+					(this.getPosX()==pos2X-2 && this.getPosY() == pos2Y+1) ||
+					(this.getPosX()==pos2X-2 && this.getPosY() == pos2Y-1)||
+				(this.getPosY()==pos2Y+2 && this.getPosX() == pos2X+1) ||
+				(this.getPosY()==pos2Y+2 && this.getPosX() == pos2X-1) ||
+				(this.getPosY()==pos2Y-2 && this.getPosX() == pos2X+1) ||
+				(this.getPosY()==pos2Y-2 && this.getPosX() == pos2X-1)){
+				return true;
+			}else{
+			return false;
+			 }*/ return false;
+		}			
 }
