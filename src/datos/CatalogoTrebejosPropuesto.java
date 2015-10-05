@@ -204,7 +204,7 @@ public class CatalogoTrebejosPropuesto
 		
 	}
 	
-	public void realizarMovimiento(int posX, int posY, Trebejo treb){
+	public void updateBD(int posX, int posY, Trebejo treb){
 		String sql;
 		PreparedStatement sentencia=null;
 		Connection con = ConexionPropuesta.getInstancia().getConn();
@@ -222,12 +222,7 @@ public class CatalogoTrebejosPropuesto
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		for(Trebejo tb: listaTrebejos){
-			if(tb.getPosX()==treb.getPosX() && tb.getPosY()==treb.getPosY() && tb.getDni1()== treb.getDni1() && tb.getDni2() == treb.getDni2()){
-				tb.setPosX(posX);
-				tb.setPosY(posY);
-			}
-		}
+		
 	}
 	
 	public Trebejo buscarTrebejo(int posX, int posY, int dni1, int dni2){
@@ -270,6 +265,25 @@ public class CatalogoTrebejosPropuesto
 			e.printStackTrace();
 		}	
 	return t;
+	}
+	public void removeBD(Trebejo treb) {
+		String sql;
+		PreparedStatement sentencia=null;
+		Connection con = ConexionPropuesta.getInstancia().getConn();
+		sql = "DELETE from trebejos where posX=? and posY=? and dni1=? and dni2=?;";
+		try {
+			sentencia = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			sentencia.setInt(1,treb.getPosX());
+			sentencia.setInt(2, treb.getPosY());
+			sentencia.setInt(3, treb.getDni1());
+			sentencia.setInt(4, treb.getDni2());
+			sentencia.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
 	}
 	
 }

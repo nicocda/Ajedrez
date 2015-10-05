@@ -86,7 +86,17 @@ public class ControladorPartida {
 					boolean posicionOcupada=true;
 					if(treb.movimientoPermitido(posX, posY, posicionOcupada))
 					{
-						ct.realizarMovimiento(posX, posY, treb);
+						part.getFichas().remove(t);
+						ct.removeBD(t);
+						int pos= this.buscarPosicion(treb,part);
+						treb.setPosX(posX);
+						treb.setPosY(posY);
+						part.getFichas().set(pos, treb);
+						ct.updateBD(posX, posY, treb);
+						boolean turno = part.getTurno();
+						if(turno)
+							part.setTurno(false);
+						else part.setTurno(true);
 					}
 					return 2;
 				}
@@ -98,12 +108,32 @@ public class ControladorPartida {
 				boolean posicionOcupada=false;
 				if(treb.movimientoPermitido(posX, posY, posicionOcupada))
 						{
-							//otro metodo que hay que programar
+					int pos= this.buscarPosicion(treb,part);
+					treb.setPosX(posX);
+					treb.setPosY(posY);
+					part.getFichas().set(pos, treb);
+					ct.updateBD(posX, posY, treb);
+					boolean turno = part.getTurno();
+					if(turno)
+						part.setTurno(false);
+					else part.setTurno(true);
 						}
 				return 3 ;
 			}
 			else return 0;
 		}
+
+	private int buscarPosicion(Trebejo treb, Partida part) {
+		int i= 0;
+		for(Trebejo t : part.getFichas())
+		{
+			if(t.getPosX()==treb.getPosX() && t.getPosY() == treb.getPosY())
+			{
+				i=part.getFichas().indexOf(t);
+			}
+		}
+		return i;
+	}
 		
 	}
 

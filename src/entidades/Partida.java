@@ -6,6 +6,7 @@ public class Partida {
 	
 	private Jugador blanco, negro;
 	private ArrayList<Trebejo> fichas = new ArrayList<Trebejo>();
+	private boolean turno, fin;
 	
 	public Partida()
 	{
@@ -16,8 +17,26 @@ public class Partida {
 		setBlanco(b);
 		setNegro(n);
 		setFichas(fichas);
+		setTurno(false);
+		setFin(false);
 	}
 	
+	public boolean getTurno() {
+		return turno;
+	}
+
+	public void setTurno(boolean turno) {
+		this.turno = turno;
+	}
+
+	public boolean getFin() {
+		return fin;
+	}
+
+	public void setFin(boolean fin) {
+		this.fin = fin;
+	}
+
 	//Get-Set
 	public Jugador getBlanco() {
 		return blanco;
