@@ -204,7 +204,7 @@ public class CatalogoTrebejosPropuesto
 		
 	}
 	
-	public void realizarModificacion(int posX, int posY, Trebejo treb){
+	public void realizarMovimiento(int posX, int posY, Trebejo treb){
 		String sql;
 		PreparedStatement sentencia=null;
 		Connection con = ConexionPropuesta.getInstancia().getConn();

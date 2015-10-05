@@ -68,13 +68,41 @@ public class ControladorPartida {
 	}
 	
 	
-	public void mover(int posX, int posY, Trebejo treb, int dni1, int dni2){
-		Trebejo trebOtro = ct.buscarTrebejo(posX,posY,dni1,dni2);
-		//FAlta hacer el movimiento del peon y de la reina, besos Rosa
-		if(treb.movimientoPermitido(posX, posY, trebOtro))
+	public int mover(int posX, int posY, Trebejo treb, Partida part){
+		boolean encontroTrebejo = false;
+		for  (Trebejo t : part.getFichas())
 		{
-			ct.realizarModificacion(posX, posY, treb);
-		}
+			if(t.getPosX()== posX && t.getPosY()==posY)
+			{	
+				encontroTrebejo=true;
+				if (t.getColor() == treb.getColor())
+				{
+					//No puedo mover
+					return 1 ;
+				}
+				//Como
+				else 
+				{
+					boolean posicionOcupada=true;
+					if(treb.movimientoPermitido(posX, posY, posicionOcupada))
+					{
+						ct.realizarMovimiento(posX, posY, treb);
+					}
+					return 2;
+				}
+			}
+			
+		};
+			if(!encontroTrebejo)
+			{	
+				boolean posicionOcupada=false;
+				if(treb.movimientoPermitido(posX, posY, posicionOcupada))
+						{
+							//otro metodo que hay que programar
+						}
+				return 3 ;
+			}
+			else return 0;
 		}
 		
 	}

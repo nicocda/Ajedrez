@@ -41,6 +41,7 @@ public class Presentacion extends JFrame {
 	private JTextField movY;
 	private JLabel lblJ1, lblJ2;
 	private ControladorPartida cp = new ControladorPartida();
+	private Partida p=null;
 	
 
 	/**
@@ -125,7 +126,7 @@ public void mouseClicked(MouseEvent arg0) {
 						int j1 =Integer.parseInt( txtDni.getText());
 						int j2 =Integer.parseInt( txtDni2.getText());
 						//SI UNO DE LOS textFields ESTA VACIO TIRA ERROR(CORREGIR)...	
-								Partida p=null;
+								
 								
 										p = cp.cargarPartida(j1, j2);
 										if((p.getBlanco()== null) || (p.getNegro()== null)){
@@ -230,14 +231,13 @@ public void mouseClicked(MouseEvent arg0) {
 			public void mouseClicked(MouseEvent e) {
 				panel_inicial.setVisible(true);
 				panel_2.setVisible(false);
-				int j1 =Integer.parseInt( txtDni.getText());
-				int j2 =Integer.parseInt( txtDni2.getText());
 				int posX =Integer.parseInt( movX.getText());
 				int posY =Integer.parseInt( movY.getText());
-				Trebejo us = (Trebejo) list_1.getSelectedValue();
-				if(us!=null)
+				Trebejo trebSelecc = (Trebejo) list_1.getSelectedValue();
+				if(trebSelecc!=null)
 				{
-					cp.mover(posX, posY, us,j1,j2);
+					int estado = cp.mover(posX, posY, trebSelecc,p);
+					
 				} else{
 					JOptionPane.showMessageDialog(panel_2,"trebejo no existe");
 						}

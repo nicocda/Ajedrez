@@ -22,7 +22,7 @@ public abstract class Trebejo{
 	}
 	
 	
-	public abstract boolean movimientoPermitido(int posX, int posY, Trebejo treb);	
+	public abstract boolean movimientoPermitido(int posX, int posY, boolean estadoPosicionFinal);	
 		
 	//Get-Set
 		public int getPosX() {
