@@ -4,6 +4,10 @@ public class Jugador {
 	private int dni; 
 	private String nombre, apellido;
 	
+	public Jugador()
+	{
+	}
+	
 	public Jugador(int d, String n, String a){
 		
 		setDni(d);

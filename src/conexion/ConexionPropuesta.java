@@ -18,7 +18,7 @@ public class ConexionPropuesta
 	
 	private static String dbUrl="jdbc:mysql://localhost:3306/ajedrez";
 	private static String dbUser="root";
-	private static String dbPassword="root";
+	private static String dbPassword="123peretto";
 	
 	//Construtor Default
 	private ConexionPropuesta()

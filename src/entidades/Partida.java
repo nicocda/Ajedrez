@@ -12,13 +12,13 @@ public class Partida {
 	{
 	}
 	
-	public Partida(Jugador b, Jugador n, ArrayList<Trebejo> fichas){
+	public Partida(Jugador b, Jugador n, ArrayList<Trebejo> fichas, boolean turno, boolean fin){
 		
 		setBlanco(b);
 		setNegro(n);
 		setFichas(fichas);
-		setTurno(false);
-		setFin(false);
+		setTurno(turno);
+		setFin(fin);
 	}
 	
 	public boolean getTurno() {

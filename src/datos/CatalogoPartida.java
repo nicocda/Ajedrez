@@ -1,7 +1,22 @@
 package datos;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 //import conexion.DataConnection;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+import conexion.ConexionPropuesta;
+import entidades.Alfil;
+import entidades.Caballo;
+import entidades.Jugador;
+import entidades.Partida;
+import entidades.Peon;
+import entidades.Reina;
+import entidades.Rey;
+import entidades.Torre;
+import entidades.Trebejo;
 
 public class CatalogoPartida {
 
@@ -21,5 +36,8 @@ public class CatalogoPartida {
 		con.setQuery("INSERT INTO partida (blanco, negro) VALUES ("+j1+", "+j2+")");
 		
 		}*/
+	
+	
+	
 	
 }

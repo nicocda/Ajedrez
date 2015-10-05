@@ -191,12 +191,13 @@ public class Presentacion extends JFrame {
 				int j1 =Integer.parseInt(txtDniBlanco.getText());
 				int j2 =Integer.parseInt(txtDniNegro.getText());
 				//SI UNO DE LOS textFields ESTA VACIO TIRA ERROR(CORREGIR)...	
-				Partida p=null;	
+				Partida p = new Partida();	
 				p = cp.cargarPartida(j1, j2);
-				if((p.getBlanco()== null) || (p.getNegro()== null)){
+				if((p.getBlanco() == null) || (p.getNegro() == null)){
 					JOptionPane.showMessageDialog(pnlFichas,"Jugador no existe, ingrese otro");
 				}
-				else {
+				else 
+				{
 					lblJ1.setText(p.getBlanco().getNombre());
 					lblJ2.setText(p.getNegro().getNombre());
 					ArrayList<Trebejo> trebs = p.getFichas();
@@ -234,17 +235,19 @@ public class Presentacion extends JFrame {
 			}
 		});
 		
-		btnBuscarOponentes.addMouseListener(new MouseAdapter() {
+		btnBuscarOponentes.addMouseListener(new MouseAdapter() 
+		{
 			@Override
-			public void mouseClicked(MouseEvent arg0) {
+			public void mouseClicked(MouseEvent arg0) 
+			{
 				//Método privado!!
 				int dni= Integer.parseInt(txtDniBlanco.getText());
 				txtAreaPartidas.setText("");
-				ArrayList<Partida> pts= cp.buscarPartidas(dni);
-				for( Partida p: pts){
-				//Me parece que sería mucho mejor si usaramos un JList, en lugar de un TextArea.
-				txtAreaPartidas.append("Dni Blanco  : "+
-				p.getBlanco().getDni()+"       Dni Negro: "+p.getNegro().getDni()+"\n");
+				ArrayList<Integer> dniOponentes = cp.buscarOponentes(dni);
+				for( Integer d: dniOponentes)
+				{
+				txtAreaPartidas.append("Dni oponente  : "+
+				d.toString()+"\n");
 				}
 			}
 		});
