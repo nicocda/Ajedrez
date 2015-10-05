@@ -31,11 +31,11 @@ public class ControladorPartida
 	}
 	
 	
-	public int mover(int posX, int posY, Trebejo treb, Partida part){
+	public int mover(int finalPosX, int finalPosY, Trebejo treb, Partida part){
 		boolean encontroTrebejo = false;
 		for  (Trebejo t : part.getFichas())
 		{
-			if(t.getPosX()== posX && t.getPosY()==posY)
+			if(t.getPosX()== finalPosX && t.getPosY()==finalPosY)
 			{	
 				encontroTrebejo=true;
 				if (t.getColor() == treb.getColor())
@@ -47,15 +47,15 @@ public class ControladorPartida
 				else 
 				{
 					boolean posicionOcupada=true;
-					if(treb.movimientoPermitido(posX, posY, posicionOcupada))
+					if(treb.movimientoPermitido(finalPosX, finalPosY, posicionOcupada))
 					{
 						part.getFichas().remove(t);
 						ct.removeBD(t);
 						int pos= this.buscarPosicion(treb,part);
-						treb.setPosX(posX);
-						treb.setPosY(posY);
-						part.getFichas().set(pos, treb);
-						ct.updateBD(posX, posY, treb);
+						part.getFichas().get(pos).setPosX(finalPosX);
+						part.getFichas().get(pos).setPosY(finalPosY);
+						//part.getFichas().set(pos, treb);
+						ct.updateBD(finalPosX, finalPosY, treb);
 						boolean turno = part.getTurno();
 						if(turno)
 							part.setTurno(false);
@@ -69,13 +69,13 @@ public class ControladorPartida
 			if(!encontroTrebejo)
 			{	
 				boolean posicionOcupada=false;
-				if(treb.movimientoPermitido(posX, posY, posicionOcupada))
+				if(treb.movimientoPermitido(finalPosX, finalPosY, posicionOcupada))
 						{
 					int pos= this.buscarPosicion(treb,part);
-					treb.setPosX(posX);
-					treb.setPosY(posY);
+					treb.setPosX(finalPosX);
+					treb.setPosY(finalPosY);
 					part.getFichas().set(pos, treb);
-					ct.updateBD(posX, posY, treb);
+					ct.updateBD(finalPosX, finalPosY, treb);
 					boolean turno = part.getTurno();
 					if(turno)
 						part.setTurno(false);

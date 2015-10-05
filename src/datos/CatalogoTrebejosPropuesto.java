@@ -208,7 +208,7 @@ public class CatalogoTrebejosPropuesto
 		String sql;
 		PreparedStatement sentencia=null;
 		Connection con = ConexionPropuesta.getInstancia().getConn();
-		sql = "UPDATE `ajedrez`.`trebejos` SET `posX` =?, `posY` = ? WHERE `posX` = ? AND `posY` = ? AND `dni1` = ? AND `dni2` = ?;";
+		sql = "UPDATE `ajedrez`.`trebejos` SET `posX` = ?, `posY` = ? WHERE `posX` = ? AND `posY` = ? AND `dni1` = ? AND `dni2` = ?;";
 		try {
 			sentencia = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			sentencia.setInt(1,posX);

@@ -67,7 +67,7 @@ public class Presentacion extends JFrame {
 	public Presentacion() {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 494, 471);
 		//Panel Principal
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -83,7 +83,7 @@ public class Presentacion extends JFrame {
 		//Panel movimiento de fichas
 		JPanel pnlFichas = new JPanel();
 		pnlFichas.setLayout(null);
-		pnlFichas.setBounds(0, 0, 424, 251);
+		pnlFichas.setBounds(0, 0, 478, 432);
 		contentPane.add(pnlFichas);
 		pnlFichas.setVisible(false);
 
@@ -100,26 +100,26 @@ public class Presentacion extends JFrame {
 		
 		JList listaBlancas = new JList();
 		DefaultListModel model_1 = new DefaultListModel();
-		listaBlancas.setBounds(38, 61, 135, 120);
+		listaBlancas.setBounds(38, 61, 135, 326);
 		pnlFichas.add(listaBlancas);
 		
 		JList listaNegras = new JList();
 		DefaultListModel model_2 = new DefaultListModel();
-		listaNegras.setBounds(257, 61, 135, 120);
+		listaNegras.setBounds(257, 61, 135, 326);
 		pnlFichas.add(listaNegras);
 		
 		txtMovX = new JTextField();
 		txtMovX.setColumns(10);
-		txtMovX.setBounds(139, 192, 53, 20);
+		txtMovX.setBounds(139, 398, 53, 20);
 		pnlFichas.add(txtMovX);
 		
 		txtMovY = new JTextField();
 		txtMovY.setColumns(10);
-		txtMovY.setBounds(202, 192, 53, 20);
+		txtMovY.setBounds(202, 398, 53, 20);
 		pnlFichas.add(txtMovY);
 		
 		JLabel lblPosicionFinal = new JLabel("Posicion Final: ");
-		lblPosicionFinal.setBounds(38, 192, 104, 20);
+		lblPosicionFinal.setBounds(38, 398, 104, 20);
 		pnlFichas.add(lblPosicionFinal);
 	
 		lblJ1 = new JLabel("Jugador 1");
@@ -136,9 +136,10 @@ public class Presentacion extends JFrame {
 		btnMover.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				listaNegras.updateUI();
 				//Todo esto sería ideal que esté en un método aparte, privado (Cuando hicimos lo de 
 				//windows form de mecca, en clases, me acuerdo que una de las cosas que me corrigio fue eso.
-				pnlSeleccionPartidas.setVisible(false);
+				pnlSeleccionPartidas.setVisible(true);
 				pnlFichas.setVisible(false);
 				
 				int posX =Integer.parseInt( txtMovX.getText());
@@ -146,7 +147,7 @@ public class Presentacion extends JFrame {
 				Trebejo trebSelecc = (Trebejo) listaBlancas.getSelectedValue();
 				if(trebSelecc!=null)
 				{
-					int estado = cp.mover(posX, posY, trebSelecc,p);
+					int estado = cp.mover(posX, posY, trebSelecc, p);
 					
 				} else{
 					JOptionPane.showMessageDialog(pnlFichas,"trebejo no existe");
@@ -155,8 +156,9 @@ public class Presentacion extends JFrame {
 				
 		});
 		
-		btnMover.setBounds(292, 192, 89, 23);
+		btnMover.setBounds(292, 398, 89, 23);
 		pnlFichas.add(btnMover);
+		
 		
 		
 		//Elementos del panel "Selección de partidas"
@@ -191,7 +193,6 @@ public class Presentacion extends JFrame {
 				int j1 =Integer.parseInt(txtDniBlanco.getText());
 				int j2 =Integer.parseInt(txtDniNegro.getText());
 				//SI UNO DE LOS textFields ESTA VACIO TIRA ERROR(CORREGIR)...	
-				Partida p = new Partida();	
 				p = cp.cargarPartida(j1, j2);
 				if((p.getBlanco() == null) || (p.getNegro() == null)){
 					JOptionPane.showMessageDialog(pnlFichas,"Jugador no existe, ingrese otro");
