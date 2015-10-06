@@ -6,6 +6,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import com.sun.corba.se.impl.io.TypeMismatchException;
+
 import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -39,7 +42,7 @@ import java.awt.Component;
 public class PresentacionPropuesta extends JFrame {
 
 	private JPanel contentPane, pnlFichas, pnlSeleccionPartidas;
-	private JList listaBlancas, listaNegras; 
+	private JList<Trebejo> listaBlancas, listaNegras; 
 	private JTextField txtDniBlanco;
 	private JTextField txtMovX;
 	private JTextField txtMovY;
@@ -106,13 +109,13 @@ public class PresentacionPropuesta extends JFrame {
 		lblFichasNegras.setBounds(238, 22, 89, 44);
 		pnlFichas.add(lblFichasNegras);
 		
-		listaBlancas = new JList();
-		DefaultListModel model_1 = new DefaultListModel();
+		listaBlancas = new JList<Trebejo>();
+		DefaultListModel<Trebejo> model_1 = new DefaultListModel<Trebejo>();
 		listaBlancas.setBounds(38, 61, 135, 326);
 		pnlFichas.add(listaBlancas);
 		
-		listaNegras = new JList();
-		DefaultListModel model_2 = new DefaultListModel();
+		listaNegras = new JList<Trebejo>();
+		DefaultListModel<Trebejo> model_2 = new DefaultListModel<Trebejo>();
 		listaNegras.setBounds(257, 61, 135, 326);
 		pnlFichas.add(listaNegras);
 		
@@ -230,30 +233,41 @@ public class PresentacionPropuesta extends JFrame {
 				{
 					if (!(txtNuevaPartida.getText().isEmpty()))
 					{
-						int j1 =Integer.parseInt(txtDniBlanco.getText());
-						int j2 =Integer.parseInt(txtNuevaPartida.getText());
-						p = cp.cargarPartida(j1, j2);
-						if((p.getBlanco() == null) || (p.getNegro() == null))
+						try
 						{
-							JOptionPane.showMessageDialog(pnlFichas,"Jugador no existe, ingrese otro");
-						}
-						else 
-						{
-							lblJ1.setText(p.getBlanco().getNombre());
-							lblJ2.setText(p.getNegro().getNombre());
-							ArrayList<Trebejo> trebs = p.getFichas();
-							for (Trebejo t  :trebs){
-								if(t.getColor()){
-									model_1.addElement(t);
-									}
-									else{
-									model_2.addElement(t);
-									}
+							int j1 =Integer.parseInt(txtDniBlanco.getText());
+							int j2 =Integer.parseInt(txtNuevaPartida.getText());
+							p = cp.cargarPartida(j1, j2);
+							if((p.getBlanco() == null) || (p.getNegro() == null))
+							{
+								JOptionPane.showMessageDialog(pnlFichas,"Jugador no existe, ingrese otro");
 							}
-						listaBlancas.setModel(model_1);
-						listaNegras.setModel(model_2);
-						pnlSeleccionPartidas.setVisible(false);
-						pnlFichas.setVisible(true);
+							else 
+							{
+								lblJ1.setText(p.getBlanco().getNombre());
+								lblJ2.setText(p.getNegro().getNombre());
+								ArrayList<Trebejo> trebs = p.getFichas();
+								for (Trebejo t  :trebs){
+									if(t.getColor()){
+										model_1.addElement(t);
+										}
+										else{
+										model_2.addElement(t);
+										}
+								}
+							listaBlancas.setModel(model_1);
+							listaNegras.setModel(model_2);
+							pnlSeleccionPartidas.setVisible(false);
+							pnlFichas.setVisible(true);
+							}
+						}
+						catch(NumberFormatException ne)
+						{
+							JOptionPane.showMessageDialog(pnlSeleccionPartidas, "En este campo sólo se pueden ingresar números");
+						}
+						catch(Exception ne)
+						{
+							JOptionPane.showMessageDialog(pnlSeleccionPartidas, ne.getMessage());
 						}
 					}
 					else
@@ -293,55 +307,70 @@ public class PresentacionPropuesta extends JFrame {
 					pnlSeleccionOponentes.removeAll();
 	
 					//Busco los DNIs de los oponentes, los muestro en el panel.
-					int dni= Integer.parseInt(txtDniBlanco.getText());
-					ArrayList<Integer> dniOponentes = cp.buscarOponentes(dni);
 					
-					//Para mostrarlos recorro toda la colección y creo un nuevo botón con el texto igual al dni
-					for (int i=0; i<dniOponentes.size(); i++)
+					//NO SE si esto esta bien. Valida los tipos de dato, nada más.
+					try
 					{
-						pnlSeleccionOponentes.add(new JButton(dniOponentes.get(i).toString()));
-						//A ese boton lo guardo en una variable casteándo el componenente que tiene el panel
-						JButton a =(JButton)pnlSeleccionOponentes.getComponent(i);
-						//Y le agrego un listener. Cuando apriete uno de esos botones directamente me lleva a la partida
-						pnlSeleccionOponentes.getComponent(i).addMouseListener(new MouseAdapter() 
+						int dni= Integer.parseInt(txtDniBlanco.getText());
+						ArrayList<Integer> dniOponentes = cp.buscarOponentes(dni);
+						
+						//Para mostrarlos recorro toda la colección y creo un nuevo botón con el texto igual al dni
+						for (int i=0; i<dniOponentes.size(); i++)
 						{
-							@Override
-							public void mouseClicked(MouseEvent e) 
+							pnlSeleccionOponentes.add(new JButton(dniOponentes.get(i).toString()));
+							//A ese boton lo guardo en una variable casteándo el componenente que tiene el panel
+							JButton a =(JButton)pnlSeleccionOponentes.getComponent(i);
+							//Y le agrego un listener. Cuando apriete uno de esos botones directamente me lleva a la partida
+							pnlSeleccionOponentes.getComponent(i).addMouseListener(new MouseAdapter() 
 							{
-								if (!(txtDniBlanco.getText().isEmpty()))
+								@Override
+								public void mouseClicked(MouseEvent e) 
 								{
-									int j1 =Integer.parseInt(txtDniBlanco.getText());
-									int j2 = Integer.parseInt(a.getText());
-									
-									p = cp.cargarPartida(j1, j2);
-									if((p.getBlanco() == null) || (p.getNegro() == null))
+									if (!(txtDniBlanco.getText().isEmpty()))
 									{
-										JOptionPane.showMessageDialog(pnlFichas,"Jugador no existe, ingrese otro");
-									}
-									else 
-									{
-										lblJ1.setText(p.getBlanco().getNombre());
-										lblJ2.setText(p.getNegro().getNombre());
-										ArrayList<Trebejo> trebs = p.getFichas();
-										for (Trebejo t  :trebs){
-											if(t.getColor()){
-												model_1.addElement(t);
-												}
-												else{
-												model_2.addElement(t);
-												}
+										int j1=Integer.parseInt(txtDniBlanco.getText());
+										int j2 = Integer.parseInt(a.getText());
+										
+										p = cp.cargarPartida(j1, j2);
+										if((p.getBlanco() == null) || (p.getNegro() == null))
+										{
+											JOptionPane.showMessageDialog(pnlFichas,"Jugador no existe, ingrese otro");
 										}
-									listaBlancas.setModel(model_1);
-									listaNegras.setModel(model_2);
-									listaNegras.setEnabled(false);
-									pnlSeleccionPartidas.setVisible(false);
-									pnlFichas.setVisible(true);
+										else 
+										{
+											lblJ1.setText(p.getBlanco().getNombre());
+											lblJ2.setText(p.getNegro().getNombre());
+											ArrayList<Trebejo> trebs = p.getFichas();
+											for (Trebejo t  :trebs){
+												if(t.getColor()){
+													model_1.addElement(t);
+													}
+													else{
+													model_2.addElement(t);
+													}
+											}
+										listaBlancas.setModel(model_1);
+										listaNegras.setModel(model_2);
+										listaNegras.setEnabled(false);
+										pnlSeleccionPartidas.setVisible(false);
+										pnlFichas.setVisible(true);
+										}
+										
 									}
+									else
+										JOptionPane.showMessageDialog(pnlSeleccionPartidas, "Escriba su número de DNI");
 								}
-								else
-									JOptionPane.showMessageDialog(pnlSeleccionPartidas, "Escriba su número de DNI");
-							}
-						});
+							});
+						}
+					}
+					//Si pongo algo que no sea un numero muestra un mensaje
+					catch(NumberFormatException ne)
+					{
+						JOptionPane.showMessageDialog(pnlSeleccionPartidas, "En este campo sólo se pueden ingresar números");
+					}
+					catch(Exception ne)
+					{
+						JOptionPane.showMessageDialog(pnlSeleccionPartidas, ne.getMessage());
 					}
 				}
 				else
@@ -350,11 +379,7 @@ public class PresentacionPropuesta extends JFrame {
 		});
 		
 		btnBuscarOponentes.setBounds(10, 63, 453, 23);
-		pnlSeleccionPartidas.add(btnBuscarOponentes);
-		
-		
-
-		
+		pnlSeleccionPartidas.add(btnBuscarOponentes);	
 	}
 	
 }
