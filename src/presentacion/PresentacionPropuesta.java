@@ -148,45 +148,48 @@ public class PresentacionPropuesta extends JFrame {
 			{
 				//Todo esto sería ideal que esté en un método aparte, privado (Cuando hicimos lo de 
 				//windows form de mecca, en clases, me acuerdo que una de las cosas que me corrigio fue eso.
-				
-				int posX =Integer.parseInt( txtMovX.getText());
-				int posY =Integer.parseInt( txtMovY.getText());
-				Trebejo trebSelecc = (Trebejo) listaBlancas.getSelectedValue();
-				if(trebSelecc!=null)
+				if (!(txtMovX.getText().isEmpty()) && !(txtMovY.getText().isEmpty()))
 				{
-					int estado = cp.mover(posX, posY, trebSelecc, p);
-					switch (estado)
+					int posX =Integer.parseInt( txtMovX.getText());
+					int posY =Integer.parseInt( txtMovY.getText());
+					Trebejo trebSelecc = (Trebejo) listaBlancas.getSelectedValue();
+					if(trebSelecc!=null)
 					{
-						case 1:
-							JOptionPane.showMessageDialog(pnlFichas,"Hay un trebejo aliado en esa posición");
-							break;
-						case 2:
-							JOptionPane.showMessageDialog(pnlFichas,"Has eliminado un trebejo enemigo");
-							pnlSeleccionPartidas.setVisible(true);
-							model_1.clear();
-							model_2.clear();
-							pnlFichas.setVisible(false);
-							break;
-						case 3:
-							JOptionPane.showMessageDialog(pnlFichas,"Se movió un trebejo exitosamente");
-							pnlSeleccionPartidas.setVisible(true);
-							model_1.clear();
-							model_2.clear();
-							pnlFichas.setVisible(false);
-							break;
-						case 4:
-							JOptionPane.showMessageDialog(pnlFichas,"Este trebejo no se puede mover así");
-							break;
-						default:
-							JOptionPane.showMessageDialog(pnlFichas,"Error inesperado, debe entrar en pánico");
-							break;
+						int estado = cp.mover(posX, posY, trebSelecc, p);
+						switch (estado)
+						{
+							case 1:
+								JOptionPane.showMessageDialog(pnlFichas,"Hay un trebejo aliado en esa posición");
+								break;
+							case 2:
+								JOptionPane.showMessageDialog(pnlFichas,"Has eliminado un trebejo enemigo");
+								pnlSeleccionPartidas.setVisible(true);
+								model_1.clear();
+								model_2.clear();
+								pnlFichas.setVisible(false);
+								break;
+							case 3:
+								JOptionPane.showMessageDialog(pnlFichas,"Se movió un trebejo exitosamente");
+								pnlSeleccionPartidas.setVisible(true);
+								model_1.clear();
+								model_2.clear();
+								pnlFichas.setVisible(false);
+								break;
+							case 4:
+								JOptionPane.showMessageDialog(pnlFichas,"Este trebejo no se puede mover así");
+								break;
+							default:
+								JOptionPane.showMessageDialog(pnlFichas,"Error inesperado, debe entrar en pánico");
+								break;
+						}
+					} 
+					else
+					{
+						JOptionPane.showMessageDialog(pnlFichas,"Seleccione un trebejo");
 					}
-				} 
-				else
-				{
-					JOptionPane.showMessageDialog(pnlFichas,"Seleccione un trebejo");
 				}
-
+				else
+					JOptionPane.showMessageDialog(pnlFichas,"Debe completar los campos de la posición final");
 			}
 				
 		});
@@ -223,32 +226,43 @@ public class PresentacionPropuesta extends JFrame {
 			public void mouseClicked(MouseEvent arg0) 
 			{
 				//Selecciono los 2 dni y cargo la nueva partida.
-				int j1 =Integer.parseInt(txtDniBlanco.getText());
-				int j2 =Integer.parseInt(txtNuevaPartida.getText());
-				p = cp.cargarPartida(j1, j2);
-				if((p.getBlanco() == null) || (p.getNegro() == null))
+				if (!(txtDniBlanco.getText().isEmpty()))
 				{
-					JOptionPane.showMessageDialog(pnlFichas,"Jugador no existe, ingrese otro");
-				}
-				else 
-				{
-					lblJ1.setText(p.getBlanco().getNombre());
-					lblJ2.setText(p.getNegro().getNombre());
-					ArrayList<Trebejo> trebs = p.getFichas();
-					for (Trebejo t  :trebs){
-						if(t.getColor()){
-							model_1.addElement(t);
+					if (!(txtNuevaPartida.getText().isEmpty()))
+					{
+						int j1 =Integer.parseInt(txtDniBlanco.getText());
+						int j2 =Integer.parseInt(txtNuevaPartida.getText());
+						p = cp.cargarPartida(j1, j2);
+						if((p.getBlanco() == null) || (p.getNegro() == null))
+						{
+							JOptionPane.showMessageDialog(pnlFichas,"Jugador no existe, ingrese otro");
+						}
+						else 
+						{
+							lblJ1.setText(p.getBlanco().getNombre());
+							lblJ2.setText(p.getNegro().getNombre());
+							ArrayList<Trebejo> trebs = p.getFichas();
+							for (Trebejo t  :trebs){
+								if(t.getColor()){
+									model_1.addElement(t);
+									}
+									else{
+									model_2.addElement(t);
+									}
 							}
-							else{
-							model_2.addElement(t);
-							}
+						listaBlancas.setModel(model_1);
+						listaNegras.setModel(model_2);
+						pnlSeleccionPartidas.setVisible(false);
+						pnlFichas.setVisible(true);
+						}
 					}
-				listaBlancas.setModel(model_1);
-				listaNegras.setModel(model_2);
-				pnlSeleccionPartidas.setVisible(false);
-				pnlFichas.setVisible(true);
+					else
+						JOptionPane.showMessageDialog(pnlSeleccionPartidas, "Escriba el número de DNI del jugador con el que quiere comenzar uan nueva partida");
 				}
+			else
+				JOptionPane.showMessageDialog(pnlSeleccionPartidas, "Escriba su número de DNI");
 			}
+		
 		});
 		
 		
@@ -266,62 +280,72 @@ public class PresentacionPropuesta extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) 
 			{
-				//Una pavada: para que los paneles se muestren despues de que el usuario le da al botón...
-				scrPanelSeleccionOponentes.setBounds(10, 129, 453, 195);
-				pnlSeleccionPartidas.add(scrPanelSeleccionOponentes);
-
-				scrPanelSeleccionOponentes.setViewportView(pnlSeleccionOponentes);
-				pnlSeleccionOponentes.setLayout(new GridLayout(0, 1, 0, 0));
-				
-				//Esto es para que cada vez que vuelvo a apretar el botón de buscar un jugador se haga un refresh
-				pnlSeleccionOponentes.removeAll();
-
-				//Busco los DNIs de los oponentes, los muestro en el panel.
-				int dni= Integer.parseInt(txtDniBlanco.getText());
-				ArrayList<Integer> dniOponentes = cp.buscarOponentes(dni);
-				
-				//Para mostrarlos recorro toda la colección y creo un nuevo botón con el texto igual al dni
-				for (int i=0; i<dniOponentes.size(); i++)
+				if (!(txtDniBlanco.getText().isEmpty()))
 				{
-					pnlSeleccionOponentes.add(new JButton(dniOponentes.get(i).toString()));
-					//A ese boton lo guardo en una variable casteándo el componenente que tiene el panel
-					JButton a =(JButton)pnlSeleccionOponentes.getComponent(i);
-					//Y le agrego un listener. Cuando apriete uno de esos botones directamente me lleva a la partida
-					pnlSeleccionOponentes.getComponent(i).addMouseListener(new MouseAdapter() 
+					//Una pavada: para que los paneles se muestren despues de que el usuario le da al botón...
+					scrPanelSeleccionOponentes.setBounds(10, 129, 453, 195);
+					pnlSeleccionPartidas.add(scrPanelSeleccionOponentes);
+	
+					scrPanelSeleccionOponentes.setViewportView(pnlSeleccionOponentes);
+					pnlSeleccionOponentes.setLayout(new GridLayout(0, 1, 0, 0));
+					
+					//Esto es para que cada vez que vuelvo a apretar el botón de buscar un jugador se haga un refresh
+					pnlSeleccionOponentes.removeAll();
+	
+					//Busco los DNIs de los oponentes, los muestro en el panel.
+					int dni= Integer.parseInt(txtDniBlanco.getText());
+					ArrayList<Integer> dniOponentes = cp.buscarOponentes(dni);
+					
+					//Para mostrarlos recorro toda la colección y creo un nuevo botón con el texto igual al dni
+					for (int i=0; i<dniOponentes.size(); i++)
 					{
-						@Override
-						public void mouseClicked(MouseEvent e) 
+						pnlSeleccionOponentes.add(new JButton(dniOponentes.get(i).toString()));
+						//A ese boton lo guardo en una variable casteándo el componenente que tiene el panel
+						JButton a =(JButton)pnlSeleccionOponentes.getComponent(i);
+						//Y le agrego un listener. Cuando apriete uno de esos botones directamente me lleva a la partida
+						pnlSeleccionOponentes.getComponent(i).addMouseListener(new MouseAdapter() 
 						{
-							int j1 =Integer.parseInt(txtDniBlanco.getText());
-							int j2 = Integer.parseInt(a.getText());
-							
-							p = cp.cargarPartida(j1, j2);
-							if((p.getBlanco() == null) || (p.getNegro() == null))
+							@Override
+							public void mouseClicked(MouseEvent e) 
 							{
-								JOptionPane.showMessageDialog(pnlFichas,"Jugador no existe, ingrese otro");
-							}
-							else 
-							{
-								lblJ1.setText(p.getBlanco().getNombre());
-								lblJ2.setText(p.getNegro().getNombre());
-								ArrayList<Trebejo> trebs = p.getFichas();
-								for (Trebejo t  :trebs){
-									if(t.getColor()){
-										model_1.addElement(t);
+								if (!(txtDniBlanco.getText().isEmpty()))
+								{
+									int j1 =Integer.parseInt(txtDniBlanco.getText());
+									int j2 = Integer.parseInt(a.getText());
+									
+									p = cp.cargarPartida(j1, j2);
+									if((p.getBlanco() == null) || (p.getNegro() == null))
+									{
+										JOptionPane.showMessageDialog(pnlFichas,"Jugador no existe, ingrese otro");
+									}
+									else 
+									{
+										lblJ1.setText(p.getBlanco().getNombre());
+										lblJ2.setText(p.getNegro().getNombre());
+										ArrayList<Trebejo> trebs = p.getFichas();
+										for (Trebejo t  :trebs){
+											if(t.getColor()){
+												model_1.addElement(t);
+												}
+												else{
+												model_2.addElement(t);
+												}
 										}
-										else{
-										model_2.addElement(t);
-										}
+									listaBlancas.setModel(model_1);
+									listaNegras.setModel(model_2);
+									listaNegras.setEnabled(false);
+									pnlSeleccionPartidas.setVisible(false);
+									pnlFichas.setVisible(true);
+									}
 								}
-							listaBlancas.setModel(model_1);
-							listaNegras.setModel(model_2);
-							listaNegras.setEnabled(false);
-							pnlSeleccionPartidas.setVisible(false);
-							pnlFichas.setVisible(true);
+								else
+									JOptionPane.showMessageDialog(pnlSeleccionPartidas, "Escriba su número de DNI");
 							}
-						}
-					});
+						});
+					}
 				}
+				else
+					JOptionPane.showMessageDialog(pnlSeleccionPartidas, "Escriba su número de DNI");
 			}
 		});
 		
