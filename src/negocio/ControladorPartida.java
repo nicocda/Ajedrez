@@ -10,7 +10,6 @@ public class ControladorPartida
 	{
 		private CatalogoPartidaPropuesto cp = new CatalogoPartidaPropuesto();
 		private CatalogoTrebejosPropuesto ct = new CatalogoTrebejosPropuesto();
-		private CatalogoJugadoresPropuesto cj = new CatalogoJugadoresPropuesto();
 	
 		public Partida cargarPartida(int dni1, int dni2) 
 		{
@@ -56,12 +55,14 @@ public class ControladorPartida
 								int pos= this.buscarPosicion(treb,part);
 								part.getFichas().get(pos).setPosX(finalPosX);
 								part.getFichas().get(pos).setPosY(finalPosY);
-								//part.getFichas().set(pos, treb);
 								ct.updateBD(finalPosX, finalPosY, treb);
 								boolean turno = part.getTurno();
+								//Cambio el turno
 								if(turno)
 									part.setTurno(false);
-								else part.setTurno(true);
+								else 
+									part.setTurno(true);
+								cp.actualizarPartida(part.getBlanco().getDni(), part.getNegro().getDni(), part.getTurno(), part.getFin());
 								return 2;
 						}
 					}
@@ -82,7 +83,9 @@ public class ControladorPartida
 					boolean turno = part.getTurno();
 					if(turno)
 						part.setTurno(false);
-					else part.setTurno(true);
+					else 
+						part.setTurno(true);
+					cp.actualizarPartida(part.getBlanco().getDni(), part.getNegro().getDni(), part.getTurno(), part.getFin());
 					return 3 ;
 				}
 				else

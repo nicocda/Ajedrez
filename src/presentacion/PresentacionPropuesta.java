@@ -338,10 +338,12 @@ public class PresentacionPropuesta extends JFrame {
 										}
 										else 
 										{
+											
 											lblJ1.setText(p.getBlanco().getNombre());
 											lblJ2.setText(p.getNegro().getNombre());
 											ArrayList<Trebejo> trebs = p.getFichas();
-											for (Trebejo t  :trebs){
+											for (Trebejo t  :trebs)
+											{
 												if(t.getColor()){
 													model_1.addElement(t);
 													}
@@ -351,10 +353,19 @@ public class PresentacionPropuesta extends JFrame {
 											}
 										listaBlancas.setModel(model_1);
 										listaNegras.setModel(model_2);
-										listaNegras.setEnabled(false);
 										pnlSeleccionPartidas.setVisible(false);
 										pnlFichas.setVisible(true);
+										//Si no es su turno, no lo dejo mover
+										if (!p.getTurno() && p.getBlanco().getDni() == j1)
+										{
+											listaBlancas.setEnabled(true);
 										}
+										else
+										//Si es su turno, sí lo dejo mover
+										{
+											listaBlancas.setEnabled(false);
+										}
+									}
 										
 									}
 									else

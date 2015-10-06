@@ -88,7 +88,8 @@ public class CatalogoPartidaPropuesto
 		Connection con = ConexionPropuesta.getInstancia().getConn();
 		
 		Partida partida = new Partida();
-		Jugador jugador = new Jugador();
+		Jugador jugadorBlanco = new Jugador();
+		Jugador jugadorNegro = new Jugador();
 		Trebejo t = null;
 		ArrayList<Trebejo> trebejos = new ArrayList<Trebejo>();
 		try 
@@ -104,14 +105,14 @@ public class CatalogoPartidaPropuesto
 			
 			while (rs.next())
 			{
-				jugador.setDni(rs.getInt("p.blanco"));
-				jugador.setNombre(rs.getString("blanco.nombre"));
-				jugador.setApellido(rs.getString("blanco.apellido"));
-				partida.setBlanco(jugador);
-				jugador.setDni(rs.getInt("p.negro"));
-				jugador.setNombre(rs.getString("negro.nombre"));
-				jugador.setApellido(rs.getString("negro.apellido"));
-				partida.setNegro(jugador);
+				jugadorBlanco.setDni(rs.getInt("p.blanco"));
+				jugadorBlanco.setNombre(rs.getString("blanco.nombre"));
+				jugadorBlanco.setApellido(rs.getString("blanco.apellido"));
+				partida.setBlanco(jugadorBlanco);
+				jugadorNegro.setDni(rs.getInt("p.negro"));
+				jugadorNegro.setNombre(rs.getString("negro.nombre"));
+				jugadorNegro.setApellido(rs.getString("negro.apellido"));
+				partida.setNegro(jugadorNegro);
 				partida.setTurno(rs.getBoolean("p.turno"));
 				partida.setFin(rs.getBoolean("p.fin"));
 				char tipo = rs.getString("t.tipo").charAt(0);
@@ -176,7 +177,7 @@ public class CatalogoPartidaPropuesto
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	public void agregarPartida(int j1, int j2)
 	{
-		String sql="INSERT INTO partida (blanco, negro) VALUES (?,?)";
+		String sql="INSERT INTO partida (blanco, negro) VALUES (?, ?)";
 		PreparedStatement sentencia=null;
 		Connection conn=ConexionPropuesta.getInstancia().getConn();
 		
@@ -257,6 +258,43 @@ public class CatalogoPartidaPropuesto
 		return(oponentes);
 	}
 	
-	
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public void actualizarPartida(int dni1, int dni2, boolean turno, boolean fin)
+	{
+		String sql;
+		PreparedStatement sentencia=null;
+		Connection con = ConexionPropuesta.getInstancia().getConn();
+		sql = "UPDATE partida SET turno = ?, fin = ? WHERE (blanco = ? AND negro = ?) or negro = ? AND blanco = ?;";
+		try 
+		{
+			sentencia = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			sentencia.setBoolean(1, turno);
+			sentencia.setBoolean(2, fin);
+			sentencia.setInt(3, dni1);
+			sentencia.setInt(4, dni2);
+			sentencia.setInt(5, dni1);
+			sentencia.setInt(6, dni2);
+			sentencia.executeUpdate();
+		}
+		catch (SQLException e) 
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try
+			{
+				if(sentencia!=null && !sentencia.isClosed())
+				{
+					sentencia.close();
+					}
+				ConexionPropuesta.getInstancia().CloseConn();
+			}
+			catch (SQLException sqle)
+			{
+				sqle.printStackTrace();
+			}
+		}
+	}
 	
 }
