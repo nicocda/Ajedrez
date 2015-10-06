@@ -72,10 +72,10 @@ public class ControladorPartida
 				if(treb.movimientoPermitido(finalPosX, finalPosY, posicionOcupada))
 						{
 					int pos= this.buscarPosicion(treb,part);
+					ct.updateBD(finalPosX, finalPosY, treb);
 					treb.setPosX(finalPosX);
 					treb.setPosY(finalPosY);
 					part.getFichas().set(pos, treb);
-					ct.updateBD(finalPosX, finalPosY, treb);
 					boolean turno = part.getTurno();
 					if(turno)
 						part.setTurno(false);
