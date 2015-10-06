@@ -148,8 +148,6 @@ public class PresentacionPropuesta extends JFrame {
 			{
 				//Todo esto sería ideal que esté en un método aparte, privado (Cuando hicimos lo de 
 				//windows form de mecca, en clases, me acuerdo que una de las cosas que me corrigio fue eso.
-				pnlSeleccionPartidas.setVisible(true);
-				pnlFichas.setVisible(false);
 				
 				int posX =Integer.parseInt( txtMovX.getText());
 				int posY =Integer.parseInt( txtMovY.getText());
@@ -157,14 +155,38 @@ public class PresentacionPropuesta extends JFrame {
 				if(trebSelecc!=null)
 				{
 					int estado = cp.mover(posX, posY, trebSelecc, p);
-					
+					switch (estado)
+					{
+						case 1:
+							JOptionPane.showMessageDialog(pnlFichas,"Hay un trebejo aliado en esa posición");
+							break;
+						case 2:
+							JOptionPane.showMessageDialog(pnlFichas,"Has eliminado un trebejo enemigo");
+							pnlSeleccionPartidas.setVisible(true);
+							model_1.clear();
+							model_2.clear();
+							pnlFichas.setVisible(false);
+							break;
+						case 3:
+							JOptionPane.showMessageDialog(pnlFichas,"Se movió un trebejo exitosamente");
+							pnlSeleccionPartidas.setVisible(true);
+							model_1.clear();
+							model_2.clear();
+							pnlFichas.setVisible(false);
+							break;
+						case 4:
+							JOptionPane.showMessageDialog(pnlFichas,"Este trebejo no se puede mover así");
+							break;
+						default:
+							JOptionPane.showMessageDialog(pnlFichas,"Error inesperado, debe entrar en pánico");
+							break;
+					}
 				} 
 				else
 				{
-					JOptionPane.showMessageDialog(pnlFichas,"trebejo no existe");
+					JOptionPane.showMessageDialog(pnlFichas,"Seleccione un trebejo");
 				}
-				model_1.clear();
-				model_2.clear();
+
 			}
 				
 		});
@@ -293,6 +315,7 @@ public class PresentacionPropuesta extends JFrame {
 								}
 							listaBlancas.setModel(model_1);
 							listaNegras.setModel(model_2);
+							listaNegras.setEnabled(false);
 							pnlSeleccionPartidas.setVisible(false);
 							pnlFichas.setVisible(true);
 							}

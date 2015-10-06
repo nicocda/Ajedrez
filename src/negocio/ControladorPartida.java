@@ -36,41 +36,42 @@ public class ControladorPartida
 		for  (Trebejo t : part.getFichas())
 		{
 			if(t.getPosX()== finalPosX && t.getPosY()==finalPosY)
-			{	
-				encontroTrebejo=true;
-				if (t.getColor() == treb.getColor())
-				{
-					//No puedo mover
-					return 1 ;
-				}
-				//Como
-				else 
-				{
-					boolean posicionOcupada=true;
-					if(treb.movimientoPermitido(finalPosX, finalPosY, posicionOcupada))
+			{
+					encontroTrebejo = true;
+					if(treb.movimientoPermitido(finalPosX, finalPosY, true))
 					{
-						part.getFichas().remove(t);
-						ct.removeBD(t);
-						int pos= this.buscarPosicion(treb,part);
-						part.getFichas().get(pos).setPosX(finalPosX);
-						part.getFichas().get(pos).setPosY(finalPosY);
-						//part.getFichas().set(pos, treb);
-						ct.updateBD(finalPosX, finalPosY, treb);
-						boolean turno = part.getTurno();
-						if(turno)
-							part.setTurno(false);
-						else part.setTurno(true);
+						if (t.getColor() == treb.getColor())
+						{
+							//No puedo mover
+							return 1 ;
+						}
+						//Como
+						else 
+						{
+							
+								part.getFichas().remove(t);
+								ct.removeBD(t);
+								int pos= this.buscarPosicion(treb,part);
+								part.getFichas().get(pos).setPosX(finalPosX);
+								part.getFichas().get(pos).setPosY(finalPosY);
+								//part.getFichas().set(pos, treb);
+								ct.updateBD(finalPosX, finalPosY, treb);
+								boolean turno = part.getTurno();
+								if(turno)
+									part.setTurno(false);
+								else part.setTurno(true);
+								return 2;
+						}
 					}
-					return 2;
-				}
+					//Si el movimiento no es permitido
+					else 
+						return 4;
 			}
-			
 		};
 			if(!encontroTrebejo)
 			{	
-				boolean posicionOcupada=false;
-				if(treb.movimientoPermitido(finalPosX, finalPosY, posicionOcupada))
-						{
+				if(treb.movimientoPermitido(finalPosX, finalPosY, false))
+				{
 					int pos= this.buscarPosicion(treb,part);
 					ct.updateBD(finalPosX, finalPosY, treb);
 					treb.setPosX(finalPosX);
@@ -80,8 +81,10 @@ public class ControladorPartida
 					if(turno)
 						part.setTurno(false);
 					else part.setTurno(true);
-						}
-				return 3 ;
+					return 3 ;
+				}
+				else
+					return 4;
 			}
 			else return 0;
 		}
