@@ -87,7 +87,7 @@ public class CatalogoTrebejosPropuesto
 		{
 			e.printStackTrace();
 		}
-		/*finally
+		finally
 		{
 			try
 			{
@@ -105,7 +105,7 @@ public class CatalogoTrebejosPropuesto
 			{
 				sqle.printStackTrace();
 			}
-		}	*/
+		}	
 		return(listaTrebejos);
 	}
 	//Agrego los 32 trebejos a la lista listaTrebejos.

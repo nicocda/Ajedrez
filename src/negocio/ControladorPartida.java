@@ -49,9 +49,9 @@ public class ControladorPartida
 						//Como
 						else 
 						{
-							ct.updateBD(finalPosX, finalPosY, treb);
 							part.getFichas().remove(t);
 							ct.removeBD(t);
+							ct.updateBD(finalPosX, finalPosY, treb);
 							int pos= this.buscarPosicion(treb,part);
 							part.getFichas().get(pos).setPosX(finalPosX);
 							part.getFichas().get(pos).setPosY(finalPosY);
