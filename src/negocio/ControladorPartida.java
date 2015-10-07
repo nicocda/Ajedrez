@@ -49,21 +49,16 @@ public class ControladorPartida
 						//Como
 						else 
 						{
-							
-								part.getFichas().remove(t);
-								ct.removeBD(t);
-								int pos= this.buscarPosicion(treb,part);
-								part.getFichas().get(pos).setPosX(finalPosX);
-								part.getFichas().get(pos).setPosY(finalPosY);
-								ct.updateBD(finalPosX, finalPosY, treb);
-								boolean turno = part.getTurno();
-								//Cambio el turno
-								if(turno)
-									part.setTurno(false);
-								else 
-									part.setTurno(true);
-								cp.actualizarPartida(part.getBlanco().getDni(), part.getNegro().getDni(), part.getTurno(), part.getFin());
-								return 2;
+							ct.updateBD(finalPosX, finalPosY, treb);
+							part.getFichas().remove(t);
+							ct.removeBD(t);
+							int pos= this.buscarPosicion(treb,part);
+							part.getFichas().get(pos).setPosX(finalPosX);
+							part.getFichas().get(pos).setPosY(finalPosY);
+							//Cambio el turno
+							part.setTurno(!part.getTurno());
+							cp.actualizarPartida(part.getBlanco().getDni(), part.getNegro().getDni(), part.getTurno(), part.getFin());
+							return 2;
 						}
 					}
 					//Si el movimiento no es permitido
@@ -80,11 +75,7 @@ public class ControladorPartida
 					treb.setPosX(finalPosX);
 					treb.setPosY(finalPosY);
 					part.getFichas().set(pos, treb);
-					boolean turno = part.getTurno();
-					if(turno)
-						part.setTurno(false);
-					else 
-						part.setTurno(true);
+					part.setTurno(!part.getTurno());
 					cp.actualizarPartida(part.getBlanco().getDni(), part.getNegro().getDni(), part.getTurno(), part.getFin());
 					return 3 ;
 				}

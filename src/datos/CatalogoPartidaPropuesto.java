@@ -105,13 +105,13 @@ public class CatalogoPartidaPropuesto
 			
 			while (rs.next())
 			{
+				jugadorNegro.setDni(rs.getInt("p.negro"));
+				jugadorNegro.setNombre(rs.getString("negro.nombre"));
+				jugadorNegro.setApellido(rs.getString("negro.apellido"));
 				jugadorBlanco.setDni(rs.getInt("p.blanco"));
 				jugadorBlanco.setNombre(rs.getString("blanco.nombre"));
 				jugadorBlanco.setApellido(rs.getString("blanco.apellido"));
 				partida.setBlanco(jugadorBlanco);
-				jugadorNegro.setDni(rs.getInt("p.negro"));
-				jugadorNegro.setNombre(rs.getString("negro.nombre"));
-				jugadorNegro.setApellido(rs.getString("negro.apellido"));
 				partida.setNegro(jugadorNegro);
 				partida.setTurno(rs.getBoolean("p.turno"));
 				partida.setFin(rs.getBoolean("p.fin"));

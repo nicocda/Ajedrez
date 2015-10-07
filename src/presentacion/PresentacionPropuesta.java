@@ -85,12 +85,6 @@ public class PresentacionPropuesta extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		//Panel selección de partidas
-		pnlSeleccionPartidas = new JPanel();
-		pnlSeleccionPartidas.setBounds(5, 5, 473, 427);
-		contentPane.add(pnlSeleccionPartidas);
-		pnlSeleccionPartidas.setLayout(null);
-		
 		//Panel movimiento de fichas
 		pnlFichas = new JPanel();
 		pnlFichas.setLayout(null);
@@ -197,140 +191,70 @@ public class PresentacionPropuesta extends JFrame {
 				
 		});
 		
-		btnMover.setBounds(292, 398, 89, 23);
+		btnMover.setBounds(267, 397, 89, 23);
 		pnlFichas.add(btnMover);
 		
+		JButton btnVolver = new JButton("Volver");
+		btnVolver.setBounds(366, 397, 89, 23);
+		pnlFichas.add(btnVolver);
 		
-		
-		//Elementos del panel "Selección de partidas"
-		txtDniBlanco = new JTextField();
-		txtDniBlanco.setBounds(280, 32, 183, 20);
-		pnlSeleccionPartidas.add(txtDniBlanco);
-		txtDniBlanco.setColumns(10);
-		
-		JLabel lblDniBlanco = new JLabel("Ingrese DNI: ");
-		lblDniBlanco.setBounds(191, 35, 79, 14);
-		pnlSeleccionPartidas.add(lblDniBlanco);
-		
-		JButton btnNuevaPartida = new JButton("Nueva Partida");
-		btnNuevaPartida.setBounds(10, 393, 259, 23);
-		pnlSeleccionPartidas.add(btnNuevaPartida);
-		
-		txtNuevaPartida = new JTextField();
-		txtNuevaPartida.setBounds(280, 394, 183, 20);
-		pnlSeleccionPartidas.add(txtNuevaPartida);
-		txtNuevaPartida.setColumns(10);
-
-		
-		//Ahora va a haber un botón para crear una nueva partida
-		btnNuevaPartida.addMouseListener(new MouseAdapter() 
-		{
+		btnVolver.addMouseListener(new MouseAdapter(){
 			@Override
-			public void mouseClicked(MouseEvent arg0) 
+			public void mouseClicked(MouseEvent arg0)
 			{
-				//Selecciono los 2 dni y cargo la nueva partida.
-				if (!(txtDniBlanco.getText().isEmpty()))
-				{
-					if (!(txtNuevaPartida.getText().isEmpty()))
-					{
-						try
-						{
-							int j1 =Integer.parseInt(txtDniBlanco.getText());
-							int j2 =Integer.parseInt(txtNuevaPartida.getText());
-							p = cp.cargarPartida(j1, j2);
-							if((p.getBlanco() == null) || (p.getNegro() == null))
-							{
-								JOptionPane.showMessageDialog(pnlFichas,"Jugador no existe, ingrese otro");
-							}
-							else 
-							{
-								lblJ1.setText(p.getBlanco().getNombre());
-								lblJ2.setText(p.getNegro().getNombre());
-								ArrayList<Trebejo> trebs = p.getFichas();
-								for (Trebejo t  :trebs){
-									if(t.getColor()){
-										model_1.addElement(t);
-										}
-										else{
-										model_2.addElement(t);
-										}
-								}
-							listaBlancas.setModel(model_1);
-							listaNegras.setModel(model_2);
-							pnlSeleccionPartidas.setVisible(false);
-							pnlFichas.setVisible(true);
-							}
-						}
-						catch(NumberFormatException ne)
-						{
-							JOptionPane.showMessageDialog(pnlSeleccionPartidas, "En este campo sólo se pueden ingresar números");
-						}
-						catch(Exception ne)
-						{
-							JOptionPane.showMessageDialog(pnlSeleccionPartidas, ne.getMessage());
-						}
-					}
-					else
-						JOptionPane.showMessageDialog(pnlSeleccionPartidas, "Escriba el número de DNI del jugador con el que quiere comenzar uan nueva partida");
-				}
-			else
-				JOptionPane.showMessageDialog(pnlSeleccionPartidas, "Escriba su número de DNI");
+				pnlSeleccionPartidas.setVisible(true);
+				pnlFichas.setVisible(false);
+				model_1.clear();
+				model_2.clear();
 			}
-		
 		});
-		
-		
-		JButton btnBuscarOponentes = new JButton("Buscar Oponentes");
 		
 		//Si los paneles no son propiedades privadas no puedo entrar a modificarlos en el evento (no se por qué)
 		//Panel scrolleable, donde apareceran las partidas del jugador.
 		scrPanelSeleccionOponentes = new JScrollPane();
 		pnlSeleccionOponentes = new JPanel();
 		
-
+		//Panel selección de partidas
+		pnlSeleccionPartidas = new JPanel();
+		pnlSeleccionPartidas.setBounds(5, 5, 473, 427);
+		contentPane.add(pnlSeleccionPartidas);
+		pnlSeleccionPartidas.setLayout(null);
 		
-		btnBuscarOponentes.addMouseListener(new MouseAdapter() 
-		{
-			@Override
-			public void mouseClicked(MouseEvent arg0) 
-			{
-				if (!(txtDniBlanco.getText().isEmpty()))
-				{
-					//Una pavada: para que los paneles se muestren despues de que el usuario le da al botón...
-					scrPanelSeleccionOponentes.setBounds(10, 129, 453, 195);
-					pnlSeleccionPartidas.add(scrPanelSeleccionOponentes);
-	
-					scrPanelSeleccionOponentes.setViewportView(pnlSeleccionOponentes);
-					pnlSeleccionOponentes.setLayout(new GridLayout(0, 1, 0, 0));
+			//Elementos del panel "Selección de partidas"
+			txtDniBlanco = new JTextField();
+			txtDniBlanco.setBounds(280, 32, 183, 20);
+			pnlSeleccionPartidas.add(txtDniBlanco);
+			txtDniBlanco.setColumns(10);
+			
+			JLabel lblDniBlanco = new JLabel("Ingrese DNI: ");
+			lblDniBlanco.setBounds(191, 35, 79, 14);
+			pnlSeleccionPartidas.add(lblDniBlanco);
+			
+			JButton btnNuevaPartida = new JButton("Nueva Partida");
+			btnNuevaPartida.setBounds(10, 393, 259, 23);
+			pnlSeleccionPartidas.add(btnNuevaPartida);
+			
+			txtNuevaPartida = new JTextField();
+			txtNuevaPartida.setBounds(280, 394, 183, 20);
+			pnlSeleccionPartidas.add(txtNuevaPartida);
+			txtNuevaPartida.setColumns(10);
+			
 					
-					//Esto es para que cada vez que vuelvo a apretar el botón de buscar un jugador se haga un refresh
-					pnlSeleccionOponentes.removeAll();
-	
-					//Busco los DNIs de los oponentes, los muestro en el panel.
-					
-					//NO SE si esto esta bien. Valida los tipos de dato, nada más.
-					try
+					//Ahora va a haber un botón para crear una nueva partida
+					btnNuevaPartida.addMouseListener(new MouseAdapter() 
 					{
-						int dni= Integer.parseInt(txtDniBlanco.getText());
-						ArrayList<Integer> dniOponentes = cp.buscarOponentes(dni);
-						
-						//Para mostrarlos recorro toda la colección y creo un nuevo botón con el texto igual al dni
-						for (int i=0; i<dniOponentes.size(); i++)
+						@Override
+						public void mouseClicked(MouseEvent arg0) 
 						{
-							pnlSeleccionOponentes.add(new JButton(dniOponentes.get(i).toString()));
-							//A ese boton lo guardo en una variable casteándo el componenente que tiene el panel
-							JButton a =(JButton)pnlSeleccionOponentes.getComponent(i);
-							//Y le agrego un listener. Cuando apriete uno de esos botones directamente me lleva a la partida
-							pnlSeleccionOponentes.getComponent(i).addMouseListener(new MouseAdapter() 
+							//Selecciono los 2 dni y cargo la nueva partida.
+							if (!(txtDniBlanco.getText().isEmpty()))
 							{
-								@Override
-								public void mouseClicked(MouseEvent e) 
+								if (!(txtNuevaPartida.getText().isEmpty()))
 								{
-									if (!(txtDniBlanco.getText().isEmpty()))
+									try
 									{
-										int j1=Integer.parseInt(txtDniBlanco.getText());
-										int j2 = Integer.parseInt(a.getText());
-										
+										int j1 =Integer.parseInt(txtDniBlanco.getText());
+										int j2 =Integer.parseInt(txtNuevaPartida.getText());
 										p = cp.cargarPartida(j1, j2);
 										if((p.getBlanco() == null) || (p.getNegro() == null))
 										{
@@ -338,12 +262,10 @@ public class PresentacionPropuesta extends JFrame {
 										}
 										else 
 										{
-											
 											lblJ1.setText(p.getBlanco().getNombre());
 											lblJ2.setText(p.getNegro().getNombre());
 											ArrayList<Trebejo> trebs = p.getFichas();
-											for (Trebejo t  :trebs)
-											{
+											for (Trebejo t  :trebs){
 												if(t.getColor()){
 													model_1.addElement(t);
 													}
@@ -355,42 +277,157 @@ public class PresentacionPropuesta extends JFrame {
 										listaNegras.setModel(model_2);
 										pnlSeleccionPartidas.setVisible(false);
 										pnlFichas.setVisible(true);
-										//Si no es su turno, no lo dejo mover
-										if (!p.getTurno() && p.getBlanco().getDni() == j1)
-										{
-											listaBlancas.setEnabled(true);
-										}
-										else
-										//Si es su turno, sí lo dejo mover
-										{
-											listaBlancas.setEnabled(false);
 										}
 									}
-										
+									catch(NumberFormatException ne)
+									{
+										JOptionPane.showMessageDialog(pnlSeleccionPartidas, "En este campo sólo se pueden ingresar números");
 									}
-									else
-										JOptionPane.showMessageDialog(pnlSeleccionPartidas, "Escriba su número de DNI");
+									catch(Exception ne)
+									{
+										JOptionPane.showMessageDialog(pnlSeleccionPartidas, ne.getMessage());
+									}
 								}
-							});
+								else
+									JOptionPane.showMessageDialog(pnlSeleccionPartidas, "Escriba el número de DNI del jugador con el que quiere comenzar uan nueva partida");
+							}
+						else
+							JOptionPane.showMessageDialog(pnlSeleccionPartidas, "Escriba su número de DNI");
 						}
-					}
-					//Si pongo algo que no sea un numero muestra un mensaje
-					catch(NumberFormatException ne)
+					
+					});
+					
+					
+					JButton btnBuscarOponentes = new JButton("Buscar Oponentes");
+					
+
+					
+					btnBuscarOponentes.addMouseListener(new MouseAdapter() 
 					{
-						JOptionPane.showMessageDialog(pnlSeleccionPartidas, "En este campo sólo se pueden ingresar números");
-					}
-					catch(Exception ne)
-					{
-						JOptionPane.showMessageDialog(pnlSeleccionPartidas, ne.getMessage());
-					}
-				}
-				else
-					JOptionPane.showMessageDialog(pnlSeleccionPartidas, "Escriba su número de DNI");
-			}
-		});
-		
-		btnBuscarOponentes.setBounds(10, 63, 453, 23);
-		pnlSeleccionPartidas.add(btnBuscarOponentes);	
-	}
+						@Override
+						public void mouseClicked(MouseEvent arg0) 
+						{
+							if (!(txtDniBlanco.getText().isEmpty()))
+							{
+								//Una pavada: para que los paneles se muestren despues de que el usuario le da al botón...
+								scrPanelSeleccionOponentes.setBounds(10, 129, 453, 195);
+								pnlSeleccionPartidas.add(scrPanelSeleccionOponentes);
 	
+								scrPanelSeleccionOponentes.setViewportView(pnlSeleccionOponentes);
+								pnlSeleccionOponentes.setLayout(new GridLayout(0, 1, 0, 0));
+								
+								//Esto es para que cada vez que vuelvo a apretar el botón de buscar un jugador se haga un refresh
+								pnlSeleccionOponentes.removeAll();
+	
+								//Busco los DNIs de los oponentes, los muestro en el panel.
+								
+								//NO SE si esto esta bien. Valida los tipos de dato, nada más.
+								try
+								{
+									int dni= Integer.parseInt(txtDniBlanco.getText());
+									ArrayList<Integer> dniOponentes = cp.buscarOponentes(dni);
+									
+									//Para mostrarlos recorro toda la colección y creo un nuevo botón con el texto igual al dni
+									for (int i=0; i<dniOponentes.size(); i++)
+									{
+										pnlSeleccionOponentes.add(new JButton(dniOponentes.get(i).toString()));
+										//A ese boton lo guardo en una variable casteándo el componenente que tiene el panel
+										JButton a =(JButton)pnlSeleccionOponentes.getComponent(i);
+										//Y le agrego un listener. Cuando apriete uno de esos botones directamente me lleva a la partida
+										pnlSeleccionOponentes.getComponent(i).addMouseListener(new MouseAdapter() 
+										{
+											@Override
+											public void mouseClicked(MouseEvent e) 
+											{
+												if (!(txtDniBlanco.getText().isEmpty()))
+												{
+													int j1=Integer.parseInt(txtDniBlanco.getText());
+													int j2 = Integer.parseInt(a.getText());
+													
+													p = cp.cargarPartida(j1, j2);
+													if((p.getBlanco() == null) || (p.getNegro() == null))
+													{
+														JOptionPane.showMessageDialog(pnlFichas,"Jugador no existe, ingrese otro");
+													}
+													else 
+													{											
+														ArrayList<Trebejo> trebs = p.getFichas();
+														for (Trebejo t  :trebs)
+														{
+															if(t.getColor()){
+																model_1.addElement(t);
+																}
+																else{
+																model_2.addElement(t);
+																}
+														}
+
+														if (j1 == p.getBlanco().getDni())
+														{
+															lblJ1.setText(p.getBlanco().getNombre());
+															lblJ2.setText(p.getNegro().getNombre());
+															listaBlancas.setModel(model_1);
+															listaNegras.setModel(model_2);
+														}
+														else if(j1 == p.getNegro().getDni())
+														{
+															lblJ1.setText(p.getNegro().getNombre());
+															lblJ2.setText(p.getBlanco().getNombre());
+															listaBlancas.setModel(model_2);
+															listaNegras.setModel(model_1);
+														}
+														pnlSeleccionPartidas.setVisible(false);
+														pnlFichas.setVisible(true);
+														//Valido que sea su turno, si no lo es le deshabilito el JList
+														if (p.getBlanco().getDni() == j1)
+														{
+															listaNegras.setEnabled(false);
+															if (!p.getTurno())
+															{
+																listaBlancas.setEnabled(true);
+															}
+															else
+															{
+																listaBlancas.setEnabled(false);
+															}
+														}
+														else if (p.getNegro().getDni() == j1)
+														{
+															listaNegras.setEnabled(false);
+															if (p.getTurno())
+															{
+																listaBlancas.setEnabled(true);
+															}
+															else
+															{
+																listaBlancas.setEnabled(false);
+															}
+														}
+													}
+													
+												}
+												else
+													JOptionPane.showMessageDialog(pnlSeleccionPartidas, "Escriba su número de DNI");
+											}
+										});
+									}
+								}
+								//Si pongo algo que no sea un numero muestra un mensaje
+								catch(NumberFormatException ne)
+								{
+									JOptionPane.showMessageDialog(pnlSeleccionPartidas, "En este campo sólo se pueden ingresar números");
+								}
+								catch(Exception ne)
+								{
+									JOptionPane.showMessageDialog(pnlSeleccionPartidas, ne.getMessage());
+								}
+							}
+							else
+								JOptionPane.showMessageDialog(pnlSeleccionPartidas, "Escriba su número de DNI");
+						}
+					});
+					
+					btnBuscarOponentes.setBounds(10, 63, 453, 23);
+					pnlSeleccionPartidas.add(btnBuscarOponentes);	
+	}
 }
