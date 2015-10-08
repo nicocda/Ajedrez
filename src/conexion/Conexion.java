@@ -2,16 +2,16 @@ package conexion;
 
 import java.sql.*;
 
-public class ConexionPropuesta 
+public class Conexion 
 {
 
 	//Singleton: Instanciar una única vez la conexion
-	private static ConexionPropuesta instancia;
-	public static ConexionPropuesta getInstancia()
+	private static Conexion instancia;
+	public static Conexion getInstancia()
 	{
 		if(instancia==null)
 		{
-			instancia=new ConexionPropuesta();
+			instancia=new Conexion();
 		}
 		return instancia;
 	}
@@ -21,7 +21,7 @@ public class ConexionPropuesta
 	private static String dbPassword="root";
 	
 	//Construtor Default
-	private ConexionPropuesta()
+	private Conexion()
 	{
 	}
 	

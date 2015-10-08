@@ -2,15 +2,14 @@ package negocio;
 import java.util.ArrayList;
 
 import datos.*;
-import entidades.Jugador;
 import entidades.Partida;
 import entidades.Trebejo;
 
 public class ControladorPartida 
 	{
-		private CatalogoPartidaPropuesto cp = new CatalogoPartidaPropuesto();
-		private CatalogoTrebejosPropuesto ct = new CatalogoTrebejosPropuesto();
-		private CatalogoJugadoresPropuesto cj = new CatalogoJugadoresPropuesto();
+		private CatalogoPartida cp = new CatalogoPartida();
+		private CatalogoTrebejos ct = new CatalogoTrebejos();
+		private CatalogoJugadores cj = new CatalogoJugadores();
 	
 	
 		public Partida cargarPartida(int dni1, int dni2) 
@@ -60,8 +59,8 @@ public class ControladorPartida
 						else 
 						{
 							part.getFichas().remove(t);
-							ct.removeBD(t);
-							ct.updateBD(finalPosX, finalPosY, treb);
+							ct.borrarTrebejos(t);
+							ct.actualizarTrebejos(finalPosX, finalPosY, treb);
 							int pos= this.buscarPosicion(treb,part);
 							part.getFichas().get(pos).setPosX(finalPosX);
 							part.getFichas().get(pos).setPosY(finalPosY);
@@ -86,7 +85,7 @@ public class ControladorPartida
 				if(treb.movimientoPermitido(finalPosX, finalPosY, false))
 				{
 					int pos= this.buscarPosicion(treb,part);
-					ct.updateBD(finalPosX, finalPosY, treb);
+					ct.actualizarTrebejos(finalPosX, finalPosY, treb);
 					treb.setPosX(finalPosX);
 					treb.setPosY(finalPosY);
 					part.getFichas().set(pos, treb);

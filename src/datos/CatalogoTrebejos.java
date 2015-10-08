@@ -1,63 +1,179 @@
 package datos;
-import java.sql.*;
+
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-import entidades.*;
 
-//import conexion.DataConnection;
+import conexion.Conexion;
+import entidades.Alfil;
+import entidades.Caballo;
+import entidades.Peon;
+import entidades.Reina;
+import entidades.Rey;
+import entidades.Torre;
 import entidades.Trebejo;
-public class CatalogoTrebejos {
-/*
-	public void addTrebejos(int j1, int j2) throws SQLException {
-		DataConnection con = new DataConnection();
-		
-		for(int i=1;i<=8;i++)
-		{
-			String query="INSERT INTO `ajedrez`.`trebejos` (`tipo`,`posX`,`posY`,`color`,`dni1`,`dni2`) VALUES('P',"+i+",2,true,"+j1+","+j2+"),('P',"+i+",7,false,"+j1+","+j2+");";
-			con.setQuery(query);
-		}
-		
-		String query="INSERT INTO `ajedrez`.`trebejos` (`tipo`,`posX`,`posY`,`color`,`dni1`,`dni2`) VALUES('A',3,1,true,"+j1+","+j2+"),('A',6,1,true,"+j1+","+j2+"),('A',3,8,false,"+j1+","+j2+"),('A',6,8,false,"+j1+","+j2+"),"
-																										+ "('C',2,1,true,"+j1+","+j2+"),('C',7,1,true,"+j1+","+j2+"),('C',2,8,false,"+j1+","+j2+"),('C',7,8,false,"+j1+","+j2+"),"
-																										+ "('T',8,1,true,"+j1+","+j2+"),('T',1,1,true,"+j1+","+j2+"),('T',1,8,false,"+j1+","+j2+"),('T',8,8,false,"+j1+","+j2+"),"
-																										+ "('D',4,1,true,"+j1+","+j2+"),('D',4,8,false,"+j1+","+j2+"),"
-																										+ "('R',5,1,true,"+j1+","+j2+"),('R',5,8,false,"+j1+","+j2+")";
-		con.setQuery(query);
-		
-	}
 
-	public ArrayList<Trebejo> buscarTrebejos(int j1, int j2) throws SQLException {
-		DataConnection con = new DataConnection();
-		ArrayList<Trebejo> array = new ArrayList<Trebejo>();
-		String query= "select * from trebejos where dni1="+j1+" and dni2="+j2;
-		ResultSet resultado = con.getQuery(query);
-		while(resultado.next()){
-			char tipo = resultado.getString(1).charAt(0);
-			int posX = resultado.getInt(2);
-			int posY = resultado.getInt(3);
-			boolean color = resultado.getBoolean(4);
-			Trebejo t = null;
-			switch(tipo){
-				case 'P' : t= new Peon(tipo,posX,posY,color,j1,j2);
-							break;
-				case 'T' : t= new Torre(tipo,posX,posY,color,j1,j2);
-							break;
-				case 'C' : t= new Caballo(tipo,posX,posY,color,j1,j2);
-							break;
-				case 'A' : t= new Alfil(tipo,posX,posY,color,j1,j2);
-							break;
-				case 'R' : t= new Rey(tipo,posX,posY,color,j1,j2);
-							break;
-				case 'D' : t=new Reina(tipo,posX,posY,color,j1,j2);
-							break;
+public class CatalogoTrebejos
+{
+	static private ArrayList<Trebejo> listaTrebejos;
+	private static CatalogoTrebejos instance = null;
+	public CatalogoTrebejos() {
+	   }
+	   public static CatalogoTrebejos getInstance() {
+	      if(instance == null) {
+	         instance = new CatalogoTrebejos();
+	      }
+	      return instance;
+	   }
 	
-			}
-				
-			if (t!=null)array.add(t);
-			
-		}
-
-		
-		return array;
+	public ArrayList<Trebejo> getListaTrebejos()
+	{
+		return listaTrebejos;
 	}
-*/
+	
+	
+	
+
+	//Agrego los 32 trebejos a la lista listaTrebejos.
+	public void addTrebejos(int dni1, int dni2){
+		listaTrebejos = new ArrayList<Trebejo>();
+		
+		//Fichas blancas
+		for(int i = 0; i<8; i++){
+			Peon pe = new Peon('P', i, 1, true, dni1, dni2);
+			listaTrebejos.add(pe);
+			}
+		Caballo c1 = new Caballo('C', 1, 0, true, dni1, dni2);
+		listaTrebejos.add(c1);
+		Caballo c2 = new Caballo('C', 6, 0, true, dni1, dni2);
+		listaTrebejos.add(c2);
+		Torre t1 = new Torre('T', 7, 0, true, dni1, dni2);
+		listaTrebejos.add(t1);
+		Torre t2 = new Torre('T', 0, 0, true, dni1, dni2);
+		listaTrebejos.add(t2);
+		Alfil a1 = new Alfil('A', 2, 0, true, dni1, dni2);
+		listaTrebejos.add(a1);
+		Alfil a2 = new Alfil('A', 5, 0, true, dni1, dni2);
+		listaTrebejos.add(a2);
+		Rey k1 = new Rey('K', 3, 0, true, dni1, dni2);
+		listaTrebejos.add(k1);
+		Reina q1 = new Reina('Q', 4, 0, true, dni1, dni2);
+		listaTrebejos.add(q1);
+		//Fichas negras
+		for(int i = 0; i<8; i++){
+			Peon pe = new Peon('P', i, 6, false, dni1, dni2);
+			listaTrebejos.add(pe);
+			}
+		Caballo c3 = new Caballo('C', 1, 7, false, dni1, dni2);
+		listaTrebejos.add(c3);
+		Caballo c4 = new Caballo('C', 6, 7, false, dni1, dni2);
+		listaTrebejos.add(c4);
+		Torre t3 = new Torre('T', 7, 7, false, dni1, dni2);
+		listaTrebejos.add(t3);
+		Torre t4 = new Torre('T', 0, 7, false, dni1, dni2);
+		listaTrebejos.add(t4);
+		Alfil a3 = new Alfil('A', 2, 7, false, dni1, dni2);
+		listaTrebejos.add(a3);
+		Alfil a4 = new Alfil('A', 5, 7, false, dni1, dni2);
+		listaTrebejos.add(a4);
+		Rey k2 = new Rey('K', 4, 7, false, dni1, dni2);
+		listaTrebejos.add(k2);
+		Reina q2 = new Reina('Q', 3, 7, false, dni1, dni2);
+		listaTrebejos.add(q2);
+		
+		this.registrarTrebejos();
+				
+	}
+
+	//Introduzco los 32 trebejos en la DB.
+	private void registrarTrebejos(){
+		String sql;
+		PreparedStatement sentencia=null;
+		Connection con = Conexion.getInstancia().getConn();
+		
+		try
+		{
+		for(Trebejo t : listaTrebejos)
+			{
+			
+			sql = "INSERT INTO `ajedrez`.`trebejos` (`tipo`,`posX`,`posY`,`color`,`dni1`,`dni2`) VALUES(?,?,?,?,?,?)";
+			sentencia = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			sentencia.setString(1,String.valueOf(t.getTipo()));
+			sentencia.setInt(2, t.getPosX());
+			sentencia.setInt(3, t.getPosY());
+			sentencia.setBoolean(4, t.getColor());
+			sentencia.setInt(5, t.getDni1());
+			sentencia.setInt(6, t.getDni2());
+			sentencia.executeUpdate();
+			}					
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try
+			{
+				if(sentencia!=null && !sentencia.isClosed())
+				{
+					sentencia.close();
+				}
+				Conexion.getInstancia().CloseConn();
+			}
+			catch (SQLException sqle)
+			{
+				sqle.printStackTrace();
+			}
+		}	
+		
+		
+	}
+	
+	public void actualizarTrebejos(int posX, int posY, Trebejo treb){
+		String sql;
+		PreparedStatement sentencia=null;
+		Connection con = Conexion.getInstancia().getConn();
+		sql = "UPDATE `ajedrez`.`trebejos` SET `posX` = ?, `posY` = ? WHERE `posX` = ? AND `posY` = ? AND `dni1` = ? AND `dni2` = ?;";
+		try {
+			sentencia = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			sentencia.setInt(1,posX);
+			sentencia.setInt(2, posY);
+			sentencia.setInt(3,treb.getPosX());
+			sentencia.setInt(4, treb.getPosY());
+			sentencia.setInt(5, treb.getDni1());
+			sentencia.setInt(6, treb.getDni2());
+			sentencia.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	public void borrarTrebejos(Trebejo treb) {
+		String sql;
+		PreparedStatement sentencia=null;
+		Connection con = Conexion.getInstancia().getConn();
+		sql = "DELETE from trebejos where posX=? and posY=? and dni1=? and dni2=?;";
+		try {
+			sentencia = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+			sentencia.setInt(1,treb.getPosX());
+			sentencia.setInt(2, treb.getPosY());
+			sentencia.setInt(3, treb.getDni1());
+			sentencia.setInt(4, treb.getDni2());
+			sentencia.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
 }
+	
