@@ -164,7 +164,7 @@ public class CatalogoJugadoresPropuesto
 		{
 			e.printStackTrace();
 		}
-		/*finally
+		finally
 		{
 			try
 			{
@@ -182,7 +182,7 @@ public class CatalogoJugadoresPropuesto
 			{
 				sqle.printStackTrace();
 			}
-		}*/
+		}
 	return(j);
 	}
 	

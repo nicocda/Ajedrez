@@ -52,6 +52,7 @@ public class PresentacionPropuesta extends JFrame {
 	private JTextField txtNuevaPartida;
 	private JScrollPane scrPanelSeleccionOponentes;
 	private JPanel pnlSeleccionOponentes;
+	private DefaultListModel<Trebejo> model_1, model_2;
 	
 
 	/**
@@ -104,12 +105,12 @@ public class PresentacionPropuesta extends JFrame {
 		pnlFichas.add(lblFichasNegras);
 		
 		listaBlancas = new JList<Trebejo>();
-		DefaultListModel<Trebejo> model_1 = new DefaultListModel<Trebejo>();
+		model_1 = new DefaultListModel<Trebejo>();
 		listaBlancas.setBounds(38, 61, 135, 326);
 		pnlFichas.add(listaBlancas);
 		
 		listaNegras = new JList<Trebejo>();
-		DefaultListModel<Trebejo> model_2 = new DefaultListModel<Trebejo>();
+		model_2 = new DefaultListModel<Trebejo>();
 		listaNegras.setBounds(257, 61, 135, 326);
 		pnlFichas.add(listaNegras);
 		
@@ -246,54 +247,33 @@ public class PresentacionPropuesta extends JFrame {
 						@Override
 						public void mouseClicked(MouseEvent arg0) 
 						{
-							//Selecciono los 2 dni y cargo la nueva partida.
-							if (!(txtDniBlanco.getText().isEmpty()))
+							try
 							{
-								if (!(txtNuevaPartida.getText().isEmpty()))
+								//Selecciono los 2 dni y cargo la nueva partida.
+								if (!(txtDniBlanco.getText().isEmpty()))
 								{
-									try
+									if(!(txtNuevaPartida.getText().isEmpty()))
 									{
 										int j1 =Integer.parseInt(txtDniBlanco.getText());
 										int j2 =Integer.parseInt(txtNuevaPartida.getText());
-										p = cp.cargarPartida(j1, j2);
-										if((p.getBlanco() == null) || (p.getNegro() == null))
-										{
-											JOptionPane.showMessageDialog(pnlFichas,"Jugador no existe, ingrese otro");
-										}
-										else 
-										{
-											lblJ1.setText(p.getBlanco().getNombre());
-											lblJ2.setText(p.getNegro().getNombre());
-											ArrayList<Trebejo> trebs = p.getFichas();
-											for (Trebejo t  :trebs){
-												if(t.getColor()){
-													model_1.addElement(t);
-													}
-													else{
-													model_2.addElement(t);
-													}
-											}
-										listaBlancas.setModel(model_1);
-										listaNegras.setModel(model_2);
-										pnlSeleccionPartidas.setVisible(false);
-										pnlFichas.setVisible(true);
-										}
+										cargarPartida(j1, j2);
 									}
-									catch(NumberFormatException ne)
-									{
-										JOptionPane.showMessageDialog(pnlSeleccionPartidas, "En este campo sólo se pueden ingresar números");
-									}
-									catch(Exception ne)
-									{
-										JOptionPane.showMessageDialog(pnlSeleccionPartidas, ne.getMessage());
-									}
+									else
+										JOptionPane.showMessageDialog(pnlSeleccionPartidas, "Escriba un número de DNI con quien comenzar una nueva partida");
 								}
 								else
-									JOptionPane.showMessageDialog(pnlSeleccionPartidas, "Escriba el número de DNI del jugador con el que quiere comenzar uan nueva partida");
+									JOptionPane.showMessageDialog(pnlSeleccionPartidas, "Escriba su número de DNI");
 							}
-						else
-							JOptionPane.showMessageDialog(pnlSeleccionPartidas, "Escriba su número de DNI");
+							catch(NumberFormatException ne)
+							{
+								JOptionPane.showMessageDialog(pnlSeleccionPartidas, "En este campo sólo se pueden ingresar números");
+							}
+							catch(Exception ne)
+							{
+								JOptionPane.showMessageDialog(pnlSeleccionPartidas, ne.getMessage());
+							}
 						}
+						
 					
 					});
 					
@@ -309,7 +289,7 @@ public class PresentacionPropuesta extends JFrame {
 						{
 							if (!(txtDniBlanco.getText().isEmpty()))
 							{
-								//Una pavada: para que los paneles se muestren despues de que el usuario le da al botón...
+								//Una pavada: para que los paneles se muestren después de que el usuario le da al botón...
 								scrPanelSeleccionOponentes.setBounds(10, 129, 453, 195);
 								pnlSeleccionPartidas.add(scrPanelSeleccionOponentes);
 	
@@ -343,68 +323,7 @@ public class PresentacionPropuesta extends JFrame {
 												{
 													int j1=Integer.parseInt(txtDniBlanco.getText());
 													int j2 = Integer.parseInt(a.getText());
-													
-													p = cp.cargarPartida(j1, j2);
-													if((p.getBlanco() == null) || (p.getNegro() == null))
-													{
-														JOptionPane.showMessageDialog(pnlFichas,"Jugador no existe, ingrese otro");
-													}
-													else 
-													{											
-														ArrayList<Trebejo> trebs = p.getFichas();
-														for (Trebejo t  :trebs)
-														{
-															if(t.getColor()){
-																model_1.addElement(t);
-																}
-																else{
-																model_2.addElement(t);
-																}
-														}
-
-														if (j1 == p.getBlanco().getDni())
-														{
-															lblJ1.setText(p.getBlanco().getNombre());
-															lblJ2.setText(p.getNegro().getNombre());
-															listaBlancas.setModel(model_1);
-															listaNegras.setModel(model_2);
-														}
-														else if(j1 == p.getNegro().getDni())
-														{
-															lblJ1.setText(p.getNegro().getNombre());
-															lblJ2.setText(p.getBlanco().getNombre());
-															listaBlancas.setModel(model_2);
-															listaNegras.setModel(model_1);
-														}
-														pnlSeleccionPartidas.setVisible(false);
-														pnlFichas.setVisible(true);
-														//Valido que sea su turno, si no lo es le deshabilito el JList
-														if (p.getBlanco().getDni() == j1)
-														{
-															listaNegras.setEnabled(false);
-															if (!p.getTurno())
-															{
-																listaBlancas.setEnabled(true);
-															}
-															else
-															{
-																listaBlancas.setEnabled(false);
-															}
-														}
-														else if (p.getNegro().getDni() == j1)
-														{
-															listaNegras.setEnabled(false);
-															if (p.getTurno())
-															{
-																listaBlancas.setEnabled(true);
-															}
-															else
-															{
-																listaBlancas.setEnabled(false);
-															}
-														}
-													}
-													
+													cargarPartida(j1, j2);
 												}
 												else
 													JOptionPane.showMessageDialog(pnlSeleccionPartidas, "Escriba su número de DNI");
@@ -429,5 +348,70 @@ public class PresentacionPropuesta extends JFrame {
 					
 					btnBuscarOponentes.setBounds(10, 63, 453, 23);
 					pnlSeleccionPartidas.add(btnBuscarOponentes);	
+	}
+	
+	protected void cargarPartida(int j1, int j2)
+	{
+			p = cp.cargarPartida(j1, j2);
+			if(p == null)
+			{
+				JOptionPane.showMessageDialog(pnlFichas,"Jugador inexistente o duplicado, ingrese otro");
+			}
+			else 
+			{											
+				ArrayList<Trebejo> trebs = p.getFichas();
+				for (Trebejo t  :trebs)
+				{
+					if(t.getColor()){
+						model_1.addElement(t);
+						}
+						else{
+						model_2.addElement(t);
+						}
+				}
+
+				if (j1 == p.getBlanco().getDni())
+				{
+					lblJ1.setText(p.getBlanco().getNombre());
+					lblJ2.setText(p.getNegro().getNombre());
+					listaBlancas.setModel(model_1);
+					listaNegras.setModel(model_2);
+				}
+				else if(j1 == p.getNegro().getDni())
+				{
+					lblJ1.setText(p.getNegro().getNombre());
+					lblJ2.setText(p.getBlanco().getNombre());
+					listaBlancas.setModel(model_2);
+					listaNegras.setModel(model_1);
+				}
+				pnlSeleccionPartidas.setVisible(false);
+				pnlFichas.setVisible(true);
+				//Valido que sea su turno, si no lo es le deshabilito el JList
+				if (p.getBlanco().getDni() == j1)
+				{
+					listaNegras.setEnabled(false);
+					if (!p.getTurno())
+					{
+						listaBlancas.setEnabled(true);
+					}
+					else
+					{
+						listaBlancas.setEnabled(false);
+					}
+				}
+				else if (p.getNegro().getDni() == j1)
+				{
+					listaNegras.setEnabled(false);
+					if (p.getTurno())
+					{
+						listaBlancas.setEnabled(true);
+					}
+					else
+					{
+						listaBlancas.setEnabled(false);
+					}
+				}
+			}
+			
 	}
 }

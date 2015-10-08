@@ -10,14 +10,24 @@ public class ControladorPartida
 	{
 		private CatalogoPartidaPropuesto cp = new CatalogoPartidaPropuesto();
 		private CatalogoTrebejosPropuesto ct = new CatalogoTrebejosPropuesto();
+		private CatalogoJugadoresPropuesto cj = new CatalogoJugadoresPropuesto();
+	
 	
 		public Partida cargarPartida(int dni1, int dni2) 
 		{
 			if (!cp.existePartida(dni1, dni2))
 			//Si la partida no existe la creo nueva (con los valores predeterminado de las piezas)y la agrego en la BD
 			{
+				if ((cj.buscarJugador(dni2) != null) && (dni1 != dni2))
+					//verifico que exista el segundo jugador, si quiero crear un new game
+					//y que no ponga dos jugadores iguales
+				{
 				cp.agregarPartida(dni1, dni2);
 				ct.addTrebejos(dni1, dni2);
+				}
+				else {
+					return null;
+				}
 			}
 			//ahora busco en la base de datos la partida que quiero y la retorno
 			Partida p = cp.buscarUnaPartida(dni1, dni2);
