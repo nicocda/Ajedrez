@@ -65,9 +65,14 @@ public class ControladorPartida
 							int pos= this.buscarPosicion(treb,part);
 							part.getFichas().get(pos).setPosX(finalPosX);
 							part.getFichas().get(pos).setPosY(finalPosY);
+							if(t.getTipo() == 'K')
+							{
+								cp.eliminarPartida(part);
+								return 5;
+							}
 							//Cambio el turno
 							part.setTurno(!part.getTurno());
-							cp.actualizarPartida(part.getBlanco().getDni(), part.getNegro().getDni(), part.getTurno(), part.getFin());
+							cp.actualizarPartida(part.getBlanco().getDni(), part.getNegro().getDni(), part.getTurno());
 							return 2;
 						}
 					}
@@ -86,7 +91,7 @@ public class ControladorPartida
 					treb.setPosY(finalPosY);
 					part.getFichas().set(pos, treb);
 					part.setTurno(!part.getTurno());
-					cp.actualizarPartida(part.getBlanco().getDni(), part.getNegro().getDni(), part.getTurno(), part.getFin());
+					cp.actualizarPartida(part.getBlanco().getDni(), part.getNegro().getDni(), part.getTurno());
 					return 3 ;
 				}
 				else

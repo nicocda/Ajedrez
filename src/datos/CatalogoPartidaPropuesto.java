@@ -69,11 +69,11 @@ public class CatalogoPartidaPropuesto
 	return(existePartida);
 }
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
-	//Método para Obtener todas las partidas iniciadas de un jugador
+
 	public Partida buscarUnaPartida(int blanco,int negro)
 	{
 		String sql=
-				"select p.blanco, p.negro, p.turno, p.fin, blanco.nombre, blanco.apellido, negro.nombre, negro.apellido, "
+				"select p.blanco, p.negro, p.turno, blanco.nombre, blanco.apellido, negro.nombre, negro.apellido, "
 				+ "t.tipo, t.posX, t.posY, t.color "
 				+ "from partida p  "
 				+ "inner join trebejos t "
@@ -114,7 +114,6 @@ public class CatalogoPartidaPropuesto
 				partida.setBlanco(jugadorBlanco);
 				partida.setNegro(jugadorNegro);
 				partida.setTurno(rs.getBoolean("p.turno"));
-				partida.setFin(rs.getBoolean("p.fin"));
 				char tipo = rs.getString("t.tipo").charAt(0);
 				int posX = rs.getInt("t.posX");
 				int posY = rs.getInt("t.posY");
@@ -204,6 +203,7 @@ public class CatalogoPartidaPropuesto
 			
 		}
 		
+		
 	}
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	
@@ -259,21 +259,20 @@ public class CatalogoPartidaPropuesto
 	}
 	
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	public void actualizarPartida(int dni1, int dni2, boolean turno, boolean fin)
+	public void actualizarPartida(int dni1, int dni2, boolean turno)
 	{
 		String sql;
 		PreparedStatement sentencia=null;
 		Connection con = ConexionPropuesta.getInstancia().getConn();
-		sql = "UPDATE partida SET turno = ?, fin = ? WHERE (blanco = ? AND negro = ?) or negro = ? AND blanco = ?;";
+		sql = "UPDATE partida SET turno = ? WHERE (blanco = ? AND negro = ?) or negro = ? AND blanco = ?;";
 		try 
 		{
 			sentencia = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			sentencia.setBoolean(1, turno);
-			sentencia.setBoolean(2, fin);
-			sentencia.setInt(3, dni1);
-			sentencia.setInt(4, dni2);
-			sentencia.setInt(5, dni1);
-			sentencia.setInt(6, dni2);
+			sentencia.setInt(2, dni1);
+			sentencia.setInt(3, dni2);
+			sentencia.setInt(4, dni1);
+			sentencia.setInt(5, dni2);
 			sentencia.executeUpdate();
 		}
 		catch (SQLException e) 
@@ -295,6 +294,55 @@ public class CatalogoPartidaPropuesto
 				sqle.printStackTrace();
 			}
 		}
+		
+	}
+	
+	public void eliminarPartida(Partida part) {
+		PreparedStatement sentencia=null;
+		Connection con = ConexionPropuesta.getInstancia().getConn();
+		String sql1 = "DELETE FROM `ajedrez`.`trebejos` WHERE ? = dni1 AND ? = dni2 AND ? = posX AND ? = posY;";
+		String sql2 = "DELETE FROM `ajedrez`.`partida` WHERE ? = blanco AND ? = negro;";
+		try
+		{
+			
+			for(Trebejo t : part.getFichas())
+			{
+				sentencia = con.prepareStatement(sql1, Statement.RETURN_GENERATED_KEYS);
+				sentencia.setInt(1, t.getDni1());
+				sentencia.setInt(2, t.getDni2());
+				sentencia.setInt(3, t.getPosX());
+				sentencia.setInt(4, t.getPosY());
+				sentencia.executeUpdate();
+			}
+			sentencia = con.prepareStatement(sql2, Statement.RETURN_GENERATED_KEYS);
+			sentencia.setInt(1, part.getBlanco().getDni());
+			sentencia.setInt(2, part.getNegro().getDni());
+			sentencia.executeUpdate();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			try
+			{
+				if(sentencia!=null && !sentencia.isClosed())
+				{
+					sentencia.close();
+					}
+				ConexionPropuesta.getInstancia().CloseConn();
+			}
+			catch (SQLException sqle)
+			{
+				sqle.printStackTrace();
+			}
+			
+			//Borro la partida del ArrayList local
+			/*int index = listaPartidas.indexOf(part);
+			listaPartidas.remove(index);*/
+		}
+		
 	}
 	
 }

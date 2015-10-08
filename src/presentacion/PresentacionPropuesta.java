@@ -42,8 +42,8 @@ import java.awt.Component;
 public class PresentacionPropuesta extends JFrame {
 
 	private JPanel contentPane, pnlFichas, pnlSeleccionPartidas;
-	private JList<Trebejo> listaBlancas, listaNegras; 
-	private JTextField txtDniBlanco;
+	private JList<Trebejo> lista1, lista2; 
+	private JTextField txtDni1;
 	private JTextField txtMovX;
 	private JTextField txtMovY;
 	private JLabel lblJ1, lblJ2;
@@ -94,25 +94,25 @@ public class PresentacionPropuesta extends JFrame {
 		pnlFichas.setVisible(false);
 
 		//Elementos del panel "Movimiento de fichas"
-		JLabel lblFichasBlancas = new JLabel("Blancas: ");
+		JLabel lblFichasBlancas = new JLabel("Fichas de: ");
 		lblFichasBlancas.setFont(new Font("Verdana", Font.BOLD, 16));
-		lblFichasBlancas.setBounds(38, 22, 89, 44);
+		lblFichasBlancas.setBounds(25, 22, 100, 44);
 		pnlFichas.add(lblFichasBlancas);
 		
-		JLabel lblFichasNegras = new JLabel("Negras: ");
+		JLabel lblFichasNegras = new JLabel("Fichas de: ");
 		lblFichasNegras.setFont(new Font("Verdana", Font.BOLD, 16));
-		lblFichasNegras.setBounds(238, 22, 89, 44);
+		lblFichasNegras.setBounds(225, 22, 100, 44);
 		pnlFichas.add(lblFichasNegras);
 		
-		listaBlancas = new JList<Trebejo>();
+		lista1 = new JList<Trebejo>();
 		model_1 = new DefaultListModel<Trebejo>();
-		listaBlancas.setBounds(38, 61, 135, 326);
-		pnlFichas.add(listaBlancas);
+		lista1.setBounds(38, 61, 135, 326);
+		pnlFichas.add(lista1);
 		
-		listaNegras = new JList<Trebejo>();
+		lista2 = new JList<Trebejo>();
 		model_2 = new DefaultListModel<Trebejo>();
-		listaNegras.setBounds(257, 61, 135, 326);
-		pnlFichas.add(listaNegras);
+		lista2.setBounds(257, 61, 135, 326);
+		pnlFichas.add(lista2);
 		
 		txtMovX = new JTextField();
 		txtMovX.setColumns(10);
@@ -150,7 +150,7 @@ public class PresentacionPropuesta extends JFrame {
 				{
 					int posX =Integer.parseInt( txtMovX.getText());
 					int posY =Integer.parseInt( txtMovY.getText());
-					Trebejo trebSelecc = (Trebejo) listaBlancas.getSelectedValue();
+					Trebejo trebSelecc = (Trebejo) lista1.getSelectedValue();
 					if(trebSelecc!=null)
 					{
 						int estado = cp.mover(posX, posY, trebSelecc, p);
@@ -176,8 +176,15 @@ public class PresentacionPropuesta extends JFrame {
 							case 4:
 								JOptionPane.showMessageDialog(pnlFichas,"Este trebejo no se puede mover así");
 								break;
+							case 5: 
+								JOptionPane.showMessageDialog(pnlFichas, "Ganaste la Partida");
+								pnlSeleccionPartidas.setVisible(true);
+								model_1.clear();
+								model_2.clear();
+								pnlFichas.setVisible(false);
+								break;
 							default:
-								JOptionPane.showMessageDialog(pnlFichas,"Error inesperado, debe entrar en pánico");
+								JOptionPane.showMessageDialog(pnlFichas,"Error desconocido, consulte al operador");
 								break;
 						}
 					} 
@@ -222,14 +229,14 @@ public class PresentacionPropuesta extends JFrame {
 		pnlSeleccionPartidas.setLayout(null);
 		
 			//Elementos del panel "Selección de partidas"
-			txtDniBlanco = new JTextField();
-			txtDniBlanco.setBounds(280, 32, 183, 20);
-			pnlSeleccionPartidas.add(txtDniBlanco);
-			txtDniBlanco.setColumns(10);
+			txtDni1 = new JTextField();
+			txtDni1.setBounds(280, 32, 183, 20);
+			pnlSeleccionPartidas.add(txtDni1);
+			txtDni1.setColumns(10);
 			
-			JLabel lblDniBlanco = new JLabel("Ingrese DNI: ");
-			lblDniBlanco.setBounds(191, 35, 79, 14);
-			pnlSeleccionPartidas.add(lblDniBlanco);
+			JLabel lblDni1 = new JLabel("Ingrese DNI: ");
+			lblDni1.setBounds(191, 35, 79, 14);
+			pnlSeleccionPartidas.add(lblDni1);
 			
 			JButton btnNuevaPartida = new JButton("Nueva Partida");
 			btnNuevaPartida.setBounds(10, 393, 259, 23);
@@ -250,11 +257,11 @@ public class PresentacionPropuesta extends JFrame {
 							try
 							{
 								//Selecciono los 2 dni y cargo la nueva partida.
-								if (!(txtDniBlanco.getText().isEmpty()))
+								if (!(txtDni1.getText().isEmpty()))
 								{
 									if(!(txtNuevaPartida.getText().isEmpty()))
 									{
-										int j1 =Integer.parseInt(txtDniBlanco.getText());
+										int j1 =Integer.parseInt(txtDni1.getText());
 										int j2 =Integer.parseInt(txtNuevaPartida.getText());
 										cargarPartida(j1, j2);
 									}
@@ -287,7 +294,7 @@ public class PresentacionPropuesta extends JFrame {
 						@Override
 						public void mouseClicked(MouseEvent arg0) 
 						{
-							if (!(txtDniBlanco.getText().isEmpty()))
+							if (!(txtDni1.getText().isEmpty()))
 							{
 								//Una pavada: para que los paneles se muestren después de que el usuario le da al botón...
 								scrPanelSeleccionOponentes.setBounds(10, 129, 453, 195);
@@ -304,8 +311,14 @@ public class PresentacionPropuesta extends JFrame {
 								//NO SE si esto esta bien. Valida los tipos de dato, nada más.
 								try
 								{
-									int dni= Integer.parseInt(txtDniBlanco.getText());
+									int dni= Integer.parseInt(txtDni1.getText());
 									ArrayList<Integer> dniOponentes = cp.buscarOponentes(dni);
+									if(dniOponentes.isEmpty())
+									{
+										JOptionPane.showMessageDialog(pnlSeleccionOponentes, "No se encontraron partidas iniciadas");
+									}
+									else
+									{
 									
 									//Para mostrarlos recorro toda la colección y creo un nuevo botón con el texto igual al dni
 									for (int i=0; i<dniOponentes.size(); i++)
@@ -319,9 +332,9 @@ public class PresentacionPropuesta extends JFrame {
 											@Override
 											public void mouseClicked(MouseEvent e) 
 											{
-												if (!(txtDniBlanco.getText().isEmpty()))
+												if (!(txtDni1.getText().isEmpty()))
 												{
-													int j1=Integer.parseInt(txtDniBlanco.getText());
+													int j1=Integer.parseInt(txtDni1.getText());
 													int j2 = Integer.parseInt(a.getText());
 													cargarPartida(j1, j2);
 												}
@@ -329,6 +342,7 @@ public class PresentacionPropuesta extends JFrame {
 													JOptionPane.showMessageDialog(pnlSeleccionPartidas, "Escriba su número de DNI");
 											}
 										});
+									}
 									}
 								}
 								//Si pongo algo que no sea un numero muestra un mensaje
@@ -374,41 +388,41 @@ public class PresentacionPropuesta extends JFrame {
 				{
 					lblJ1.setText(p.getBlanco().getNombre());
 					lblJ2.setText(p.getNegro().getNombre());
-					listaBlancas.setModel(model_1);
-					listaNegras.setModel(model_2);
+					lista1.setModel(model_1);
+					lista2.setModel(model_2);
 				}
 				else if(j1 == p.getNegro().getDni())
 				{
 					lblJ1.setText(p.getNegro().getNombre());
 					lblJ2.setText(p.getBlanco().getNombre());
-					listaBlancas.setModel(model_2);
-					listaNegras.setModel(model_1);
+					lista1.setModel(model_2);
+					lista2.setModel(model_1);
 				}
 				pnlSeleccionPartidas.setVisible(false);
 				pnlFichas.setVisible(true);
 				//Valido que sea su turno, si no lo es le deshabilito el JList
 				if (p.getBlanco().getDni() == j1)
 				{
-					listaNegras.setEnabled(false);
+					lista2.setEnabled(false);
 					if (!p.getTurno())
 					{
-						listaBlancas.setEnabled(true);
+						lista1.setEnabled(true);
 					}
 					else
 					{
-						listaBlancas.setEnabled(false);
+						lista1.setEnabled(false);
 					}
 				}
 				else if (p.getNegro().getDni() == j1)
 				{
-					listaNegras.setEnabled(false);
+					lista2.setEnabled(false);
 					if (p.getTurno())
 					{
-						listaBlancas.setEnabled(true);
+						lista1.setEnabled(true);
 					}
 					else
 					{
-						listaBlancas.setEnabled(false);
+						lista1.setEnabled(false);
 					}
 				}
 			}
