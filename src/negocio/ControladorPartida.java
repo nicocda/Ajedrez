@@ -1,73 +1,117 @@
 package negocio;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 import datos.*;
-import entidades.Jugador;
 import entidades.Partida;
 import entidades.Trebejo;
 
-public class ControladorPartida {
-		CatalogoPartidaPropuesto cp = new CatalogoPartidaPropuesto();
-		CatalogoTrebejosPropuesto ct = new CatalogoTrebejosPropuesto();
-		CatalogoJugadoresPropuesto cj = new CatalogoJugadoresPropuesto();
-	public Partida cargarPartida(int dni1, int dni2) {
-		//CatalogoPartida cp = new CatalogoPartida();
-		//CatalogoTrebejos ct = new CatalogoTrebejos();
-		//CatalogoJugadores cj = new CatalogoJugadores();
-		
-		
-		Jugador j1 = cj.buscarJugador(dni1);
-		Jugador j2 = cj.buscarJugador(dni2);
-		
-		if (!cp.existePartida(dni1, dni2))
-		{
-			cp.agregarPartida(dni1, dni2);
-			ct.addTrebejos(dni1, dni2);
-		}
-		ArrayList<Trebejo> trebejos = ct.buscarTrebejos(dni1,dni2);
-		Partida p = new Partida(j1, j2, trebejos);
-		return (p);
-		
-	}
-
-	public ArrayList<Partida> buscarPartidas(int dni){
-		ArrayList<Partida> listaPartidas = new ArrayList<Partida>();
-		//ArrayList<Jugador>	jugadores = new ArrayList<Jugador>();
-		listaPartidas = cp.buscarPartidas(dni);
-		/*for (Partida p : listaPartidas){
-			if(dni == p.getBlanco().getDni()){
-				jugadores.add(p.getNegro());
-			}else{
-				jugadores.add(p.getBlanco());
-			}
-		};*/
-		return(listaPartidas);
-		/*String query="select  p.blanco, p.negro, jn.nombre, jn.apellido, jb.nombre, jb.apellido from partida p inner join jugadores jb on p.blanco=jb.dni inner join jugadores jn on p.negro=jn.dni where blanco=? or negro=?";
-		cp.buscarPartidas(dni);
-		
+public class ControladorPartida 
+	{
+		private CatalogoPartida cp = new CatalogoPartida();
+		private CatalogoTrebejos ct = new CatalogoTrebejos();
+		private CatalogoJugadores cj = new CatalogoJugadores();
 	
-			try {
-				while(resultado.next())
+	
+		public Partida cargarPartida(int dni1, int dni2) 
+		{
+			if (!cp.existePartida(dni1, dni2))
+			//Si la partida no existe la creo nueva (con los valores predeterminado de las piezas)y la agrego en la BD
+			{
+				if ((cj.buscarJugador(dni2) != null) && (dni1 != dni2))
+					//verifico que exista el segundo jugador, si quiero crear un new game
+					//y que no ponga dos jugadores iguales
+				{
+				cp.agregarPartida(dni1, dni2);
+				ct.addTrebejos(dni1, dni2);
+				}
+				else {
+					return null;
+				}
+			}
+			//ahora busco en la base de datos la partida que quiero y la retorno
+			Partida p = cp.buscarUnaPartida(dni1, dni2);
+			return p;
+	
+		}
+
+	public ArrayList<Integer> buscarOponentes(int dni)
+	{
+		ArrayList<Integer> listaOponentes = cp.buscarOponente(dni);
+		return(listaOponentes);
+	}
+	
+	
+	public int mover(int finalPosX, int finalPosY, Trebejo treb, Partida part){
+		boolean encontroTrebejo = false;
+		for  (Trebejo t : part.getFichas())
+		{
+			if(t.getPosX()== finalPosX && t.getPosY()==finalPosY)
+			{
+					encontroTrebejo = true;
+					if(treb.movimientoPermitido(finalPosX, finalPosY, true))
 					{
-					if(Integer.parseInt(resultado.getString("p.blanco")) != Integer.parseInt(dni)){
-						textArea.append(resultado.getString("p.blanco")+" "+resultado.getString("jb.nombre")+" "+resultado.getString("jb.apellido")+"\n");
+						if (t.getColor() == treb.getColor())
+						{
+							//No puedo mover
+							return 1 ;
+						}
+						//Como
+						else 
+						{
+							part.getFichas().remove(t);
+							ct.borrarTrebejos(t);
+							ct.actualizarTrebejos(finalPosX, finalPosY, treb);
+							int pos= this.buscarPosicion(treb,part);
+							part.getFichas().get(pos).setPosX(finalPosX);
+							part.getFichas().get(pos).setPosY(finalPosY);
+							if(t.getTipo() == 'K')
+							{
+								cp.eliminarPartida(part);
+								return 5;
+							}
+							//Cambio el turno
+							part.setTurno(!part.getTurno());
+							cp.actualizarPartida(part.getBlanco().getDni(), part.getNegro().getDni(), part.getTurno());
+							return 2;
+						}
 					}
-					else{
-						textArea.append(resultado.getString("p.negro")+" "+resultado.getString("jn.nombre")+" "+resultado.getString("jn.apellido")+"\n");
-					}
-					}
-			} catch (NumberFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			};
-		*/
+					//Si el movimiento no es permitido
+					else 
+						return 4;
+			}
+		};
+			if(!encontroTrebejo)
+			{	
+				if(treb.movimientoPermitido(finalPosX, finalPosY, false))
+				{
+					int pos= this.buscarPosicion(treb,part);
+					ct.actualizarTrebejos(finalPosX, finalPosY, treb);
+					treb.setPosX(finalPosX);
+					treb.setPosY(finalPosY);
+					part.getFichas().set(pos, treb);
+					part.setTurno(!part.getTurno());
+					cp.actualizarPartida(part.getBlanco().getDni(), part.getNegro().getDni(), part.getTurno());
+					return 3 ;
+				}
+				else
+					return 4;
+			}
+			else return 0;
+		}
+
+	private int buscarPosicion(Trebejo treb, Partida part) {
+		int i= 0;
+		for(Trebejo t : part.getFichas())
+		{
+			if(t.getPosX()==treb.getPosX() && t.getPosY() == treb.getPosY())
+			{
+				i=part.getFichas().indexOf(t);
+			}
+		}
+		return i;
+	}
 		
 	}
 
 
-}
+

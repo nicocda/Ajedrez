@@ -1,11 +1,14 @@
 package entidades;
 
 public abstract class Trebejo{
-	private int posX, posY,dni1,dni2;
-	private char tipo;
-	private boolean color;
+	protected int posX, posY,dni1,dni2;
+	protected char tipo;
+	protected boolean color;
 	
-	
+	@Override
+	public String toString(){
+		return "Tipo: "+this.tipo+"  Posicion: ("+this.posX+"),("+this.posY+")";
+	}
 	
 	public Trebejo(char t, int x, int y, boolean c, int d1, int d2){
 
@@ -17,6 +20,10 @@ public abstract class Trebejo{
 		setDni2(d2);
 		
 	}
+	
+	
+	public abstract boolean movimientoPermitido(int posX, int posY, boolean estadoPosicionFinal);	
+		
 	//Get-Set
 		public int getPosX() {
 		return posX;

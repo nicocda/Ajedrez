@@ -8,4 +8,7 @@ public class Reina extends Trebejo {
 		
 		super(t, x, y, c, d1, d2);
 	}
+	public boolean movimientoPermitido(int posX, int posY, boolean estadoPosicionFinal){
+		return true;
+	}
 }
